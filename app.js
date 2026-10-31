@@ -10,7 +10,7 @@ const CONFIG = {
   name: "Building Jerusillion",
   tagline: "The rarer your answer, the higher you climb.",
   timeZone: "Australia/Sydney", // the puzzle rolls over at midnight here
-  secondsPerQuestion: 30,
+  secondsPerQuestion: 20,
   puzzleFile: "puzzles.txt",
 };
 

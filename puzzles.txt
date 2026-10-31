@@ -28,42 +28,42 @@
 # ==================================================================
 
 
-2026-10-30
+2026-10-31
 
-Q: Name a Sydney beach
-wine:    Bondi, Manly, Coogee
-rings:   Bronte, Cronulla, Maroubra, Palm Beach, Tamarama, Dee Why
-piano:   Clovelly, Balmoral, Freshwater / Freshie, Avalon, Narrabeen, Curl Curl, Collaroy, Shelly Beach / Shelly, Camp Cove, Watsons Bay
-chalice: Gordons Bay, Little Bay, Mona Vale, Newport, Bilgola, Whale Beach, Long Reef, Queenscliff, Nielsen Park / Shark Beach, Lady Bay / Lady Jane, Wanda, Elouera, North Bondi, Malabar
-swords:  Congwong Bay / Congwong, Milk Beach, Store Beach, Obelisk Beach / Obelisk, Chinamans Beach / Chinamans, Parsley Bay, Bungan, Turimetta, Warriewood, Clontarf, Fishermans Beach, Yarra Bay, Silver Beach, Bate Bay, Greenhills
+Q: Where might you find cutlery?
+wine:    Dining Hall, Buttery, Kitchenette / Kitchen, Salisbury / Sals, Library, Tut Room, Hallway
+rings:   Villa, Grad House, IHB / Ivan Head / Ivan Head Building, Trad Kitchenette, Palace
+piano:   Fralley Kitchenette, Malley Kitchenette, Talley Kitchenette, Deno Kitchenette
+chalice: Fralley Tut Room, Chapel Games Room, Bathroom
+swords:  Scattic, Fire Warden Jim's / Jim's / Firewarden / Fire Warden
 
-Q: Name a cocktail
-wine:    Margarita, Mojito, Espresso Martini, Martini
-rings:   Cosmopolitan / Cosmo, Pina Colada, Long Island Iced Tea / Long Island, Aperol Spritz / Spritz, Old Fashioned, Daiquiri, Negroni, Sex on the Beach
-piano:   Moscow Mule, Bloody Mary, Whiskey Sour / Whisky Sour, Pornstar Martini, Mai Tai, Tequila Sunrise, Caipirinha, Manhattan, Pisco Sour, Amaretto Sour, Dark and Stormy / Dark n Stormy, Paloma, Cuba Libre, Gin and Tonic / G&T, Sangria
-chalice: Sidecar, Tom Collins, Mint Julep, Gimlet, Sazerac, White Russian, Black Russian, Bellini, Mimosa, Singapore Sling, Hurricane, Zombie, Grasshopper, Lychee Martini, Blue Lagoon, Japanese Slipper, Painkiller, Boulevardier, French 75, Kir Royale, Irish Coffee, Hugo / Hugo Spritz
-swords:  Corpse Reviver, Last Word, Aviation, Vieux Carre, Ramos Gin Fizz, Penicillin, Bees Knees, Hanky Panky, Clover Club, Jungle Bird, Brandy Alexander, Rusty Nail, Godfather, Harvey Wallbanger, Salty Dog, Rob Roy, Bramble, Pegu Club, Jack Rose, Gibson, Fluffy Duck, Midori Splice, Bloody Caesar / Caesar, Snowball
+Q: Name a Sals theme
+wine:    Halloween, Pyjama Party / Pajama Party / PJ Party, Black Tie, Back to School, Anything But Clothes / ABC, Y2K, Full Moon
+rings:   Euro Summer, Apres Ski, Jersey Night, Eshays, White Lies, When I Grow Up
+piano:   Wacky Wednesday, Dynamic Duos, Bee Theme / Bees, Corridor Wars
+chalice: Dress as Your Type, Esps and Emos, WTF Are You Wearing
+swords:  Golf Pros and Tennis Bros, Legendary Lineups
 
-Q: Name a Harry Potter character
-wine:    Harry Potter / Harry, Hermione Granger / Hermione, Ron Weasley / Ron, Dumbledore / Albus Dumbledore, Voldemort / Lord Voldemort / Tom Riddle, Snape / Severus Snape, Hagrid / Rubeus Hagrid
-rings:   Draco Malfoy / Draco / Malfoy, Sirius Black / Sirius, Neville Longbottom / Neville, Luna Lovegood / Luna, Ginny Weasley / Ginny, Dobby, McGonagall / Professor McGonagall / Minerva McGonagall, Fred Weasley / Fred, George Weasley / George, Bellatrix Lestrange / Bellatrix
-piano:   Remus Lupin / Lupin, Lucius Malfoy / Lucius, Cedric Diggory / Cedric, Dolores Umbridge / Umbridge, Hedwig, Peter Pettigrew / Wormtail, Molly Weasley / Molly, Arthur Weasley, Cho Chang / Cho, Gilderoy Lockhart / Lockhart, Moaning Myrtle / Myrtle, Nagini, Kreacher, Fawkes, Buckbeak, Mad-Eye Moody / Alastor Moody / Moody, Fleur Delacour / Fleur, Viktor Krum / Krum, Percy Weasley / Percy, Dudley Dursley / Dudley, Vernon Dursley, Petunia Dursley, Lily Potter, James Potter, Tonks / Nymphadora Tonks, Slughorn / Horace Slughorn, Quirrell / Professor Quirrell, Filch / Argus Filch
-chalice: Seamus Finnigan / Seamus, Dean Thomas, Oliver Wood, Lavender Brown, Mrs Norris, Griphook, Aragog, Fang, Crookshanks, Scabbers, Firenze, Grawp, Trelawney / Sybill Trelawney, Professor Sprout / Sprout, Flitwick / Professor Flitwick, Madam Pomfrey / Pomfrey, Madam Hooch, Cornelius Fudge / Fudge, Rita Skeeter, Barty Crouch, Grindelwald / Gellert Grindelwald, Aberforth Dumbledore / Aberforth, Fenrir Greyback / Greyback, Bill Weasley, Charlie Weasley, Xenophilius Lovegood, Colin Creevey, Ollivander / Mr Ollivander, Kingsley Shacklebolt / Kingsley, Crabbe, Goyle
-swords:  Ariana Dumbledore, Mundungus Fletcher / Mundungus, Peeves, Nearly Headless Nick, Fat Lady, Bathilda Bagshot, Dedalus Diggle, Ludo Bagman, Lee Jordan, Katie Bell, Angelina Johnson, Pansy Parkinson, Marcus Flint, Romilda Vane, Cormac McLaggen, Zacharias Smith, Winky, Errol, Pigwidgeon, Fluffy, Norbert, Arabella Figg / Mrs Figg, Amos Diggory, Rufus Scrimgeour, Bloody Baron, Grey Lady / Helena Ravenclaw, Merope Gaunt, Teddy Lupin, Scorpius Malfoy, Dennis Creevey
+Q: Name a Pauline degree
+wine:    Arts, Laws / Law, Commerce, Engineering, Science, Medicine / Med, Economics / Eco, Finance, Accounting, Psychology / Psych, Computer Science / Comp Sci, Mechanical Engineering / Mech Eng, Civil Engineering / Civil, Marketing, Nursing, Education, Advanced Studies, Business Analytics
+rings:   Politics Philosophy & Economics / PPE, Psychological Science, Mechatronic Engineering / Mechatronics, Software Engineering, Electrical Engineering, Biomedical Engineering, Chemical Engineering, Data Science, Mathematics / Maths, Media & Communications / Media and Comms / Media, Medical Science / Med Sci, Management, Biology, Physics
+piano:   Aeronautical Engineering / Aero, Environmental Engineering, Applied Science, Chemistry, Banking, Business Law, Physiology, Neuroscience, International Business / Global Business, Advanced Computing, Design in Architecture / Architecture
+chalice: Veterinary Medicine / Vet Med, Veterinary Biology / Vet Biology, Nutrition & Diet / Nutrition and Dietetics / Nutrition, Human Resources / HR, Innovation & Entrepreneurship, Financial Maths & Statistics / Financial Maths, Environmental Science / Environmental Studies, Geography, Music
+swords:  Biochemistry / Molecular Biology, Genetics & Genomics / Genetics, Immunology & Pathology / Immunology, Agricultural Science / Ag Sci, International Studies, Animal & Veterinary Bioscience
 
-Q: Name a country in Africa
-wine:    Egypt, South Africa, Nigeria, Kenya
-rings:   Morocco, Ethiopia, Ghana, Madagascar, Zimbabwe, Uganda, Tanzania, Somalia
-piano:   Algeria, Libya, Tunisia, Sudan, Rwanda, Congo / Democratic Republic of the Congo / DRC / Republic of the Congo, Cameroon, Senegal, Namibia, Botswana, Zambia, Mozambique, Angola, Mali, Ivory Coast / Cote d'Ivoire
-chalice: Niger, Chad, Malawi, Lesotho, Eswatini / Swaziland, Liberia, Sierra Leone, Gambia, Burkina Faso, Gabon, Benin, Togo, Eritrea, Mauritania, South Sudan, Mauritius, Seychelles, Burundi, Guinea, Central African Republic / CAR
-swords:  Djibouti, Comoros, Cape Verde / Cabo Verde, Sao Tome and Principe / Sao Tome, Equatorial Guinea, Guinea-Bissau / Guinea Bissau
+Q: What's a standard meal or dessert you'd expect in the dining hall?
+wine:    Chicken Schnitzel / Schnitzel / Schnitty, Pasta Carbonara / Carbonara, Spaghetti Bolognese / Spag Bol / Bolognese, Roast Chicken, Curry, Pizza, Lasagne / Lasagna, Steak, Beef Burger / Burger, Chicken Parmigiana / Chicken Parma / Chicken Parmi / Parma / Parmi, Fish and Chips
+rings:   Chicken Burger, Nachos, Butter Chicken, Chicken Curry, Tacos, Fried Rice, Roast Beef, Sausages and Mash / Bangers and Mash, Chicken Stir-fry / Stir Fry
+piano:   Pork, Pulled Pork, Meat Pies / Meat Pie, Shepherd's Pie, Thai Green Curry / Green Curry, Teriyaki Chicken, Burritos
+chalice: Lemon Myrtle Chicken, Beef Stir-fry, BBQ Chicken, Pad Thai
+swords:  Whatever they give the Vegans / Vegans / Vegan Meal, Turkey, Beef Wellington
 
-Q: Name an Olympic sport
-wine:    Swimming, Athletics / Track and Field / Running, Gymnastics, Basketball
-rings:   Rowing, Cycling, Tennis, Football / Soccer, Volleyball, Boxing, Diving, Hockey / Field Hockey, Rugby / Rugby Sevens / Rugby 7s
-piano:   Sailing, Fencing, Archery, Judo, Taekwondo, Wrestling, Weightlifting, Water Polo, Triathlon, Surfing, Skateboarding, Canoeing / Kayaking / Canoe / Kayak, Equestrian / Horse Riding / Dressage / Show Jumping / Showjumping, Golf, Badminton, Table Tennis / Ping Pong, Handball, Beach Volleyball
-chalice: Shooting, Sport Climbing / Climbing / Rock Climbing, BMX, Mountain Biking, Breaking / Breakdancing, Artistic Swimming / Synchronised Swimming / Synchronized Swimming, Trampoline, Modern Pentathlon / Pentathlon, Marathon Swimming, Rhythmic Gymnastics, Decathlon, Heptathlon, Marathon, Pole Vault, Javelin, Discus, Shot Put, Hammer Throw, High Jump, Long Jump, Triple Jump, Hurdles, Steeplechase, Race Walking / Racewalk, Karate
-swords:  Curling, Skeleton, Luge, Bobsleigh / Bobsled, Biathlon, Ski Jumping, Nordic Combined, Figure Skating / Ice Skating, Speed Skating, Ice Hockey, Snowboarding, Freestyle Skiing, Alpine Skiing / Skiing, Cricket, Lacrosse, Flag Football, Squash, Softball, Baseball, Tug of War, Kitesurfing / Kiteboarding, Windsurfing
+Q: Name a type of college event (like a Wine Cellar)
+wine:    Wine Cellar, Formal, O-Week / O Week / Welcome Week, Full Moon, JDD, Valedictory Dinner / Val Dinner, Christmas Dinner, Oktoberfest, ANZAC Day / Anzac, Mother's Dinner, Father's Dinner
+rings:   Paddy's Day / St Patrick's Day, Easter, Victory Dinner / VD, Pre-Rad, Women's Formal, Drews Formal / Andrews Formal, Johns Formal, Sancta Formal, Wesley Formal
+piano:   Victoriana / V!, Mummers, Assassins, City 2 Surf / City to Surf, Sals Trivia, Beer Mile, AGM
+chalice: Back to Sals, Proposal Week, OGM, 3rd Year Dinner / Third Year Dinner, S-Club Election
+swords:  Salisbury Circus, City vs Country Tip, Surreal Sounds
 
 
 # ------------------------------------------------------------------

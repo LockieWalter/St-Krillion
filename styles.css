@@ -1,5 +1,5 @@
 /* Building Jerusillion — the pixel world fills the screen and the words float on it.
-   One thin pixel font (VT323) for reading, a pixel blackletter (Jacquard 24) for the name. */
+   One thin pixel font (VT323) for reading, a wide bold pixel face (Silkscreen) for the name. */
 
 :root {
   --night: #1c0409;
@@ -19,7 +19,7 @@
   --glass-dk: rgba(28, 4, 9, .8);
   --rule: rgba(255, 228, 138, .28);
 
-  --display: "Jacquard 24", "VT323", serif;
+  --display: "Silkscreen", "VT323", sans-serif;
   --mono: "VT323", ui-monospace, monospace;
 
   --p: 3px; /* one UI "pixel" */
@@ -117,8 +117,9 @@ p { margin: 0; }
   flex-direction: column;
   align-items: center;
   font-family: var(--display);
-  font-size: clamp(60px, 19vw, 108px);
-  line-height: .78;
+  font-size: clamp(32px, 10vw, 60px);
+  font-weight: 700;
+  line-height: 1;
   text-decoration: none;
   color: var(--gold);
   filter:
