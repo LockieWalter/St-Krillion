@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Building Jerusillion</title>
+  <meta name="description" content="The daily St Paul's College quiz. The rarer your answer, the higher you climb.">
+  <meta name="theme-color" content="#cfeeff">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Building Jerusillion — today's prompts are up">
+  <meta property="og:description" content="Five prompts. Thirty seconds each. The rarer your answer, the higher your balloon climbs.">
+  <meta property="og:image" content="https://lockiewalter.github.io/St-Krillion/og.png">
+  <meta property="og:url" content="https://lockiewalter.github.io/St-Krillion/">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Pixelify+Sans:wght@400;500;600;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <canvas id="scene" aria-hidden="true"></canvas>
+  <main id="app">
+    <p class="loading">Loading…</p>
+  </main>
+  <div id="flash" class="flash" aria-live="polite" hidden></div>
+  <div id="toast" class="toast" role="status" hidden></div>
+  <script src="scene.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
