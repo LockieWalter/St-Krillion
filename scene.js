@@ -4,15 +4,15 @@
  *  Pixel art for Building Jerusillion.
  *
  *  The page sits in front of one tall pixel world. At the bottom is
- *  St Paul's College on a sunny day. Climbing reveals Sydney Uni and
- *  the city behind it, then the clouds, a sunset, the night sky and,
- *  right at the top, a golden Jerusalem. Your score is your altitude.
+ *  the quad at St Paul's on a sunny day, framed by two jacarandas.
+ *  Climbing reveals Sydney Uni and the city behind it, then the clouds,
+ *  a sunset, the night sky and, right at the top, a golden Jerusalem.
+ *  Your score is your altitude.
  *
  *  Also in here: the tier icons and the balloon.
  * ------------------------------------------------------------------ */
 
 const Pixel = (() => {
-  const TZ = "Australia/Sydney";
   const K = 3;     // world rows per metre climbed
   const TOP = 500; // metres at the summit
 
@@ -20,12 +20,10 @@ const Pixel = (() => {
     stoneHi: "#f3d9a4", stone: "#ddb67b", stoneMid: "#c89c5e", stoneLo: "#a97b44", stoneDk: "#6f4a26",
     slateHi: "#6a6f88", slate: "#4d5168", slateDk: "#363a4e",
     glass: "#2f4670", glassHi: "#86b6e0",
-    door: "#7a1630", doorDk: "#4c0a1c",
+    door: "#7a1630",
     lawnHi: "#6aab45", lawn: "#57963a", lawnLo: "#477f2f", lawnDk: "#35631f",
-    path: "#e6cf9d", pathLo: "#c7ab73",
     trunk: "#4b3324",
     jacHi: "#c2adf5", jac1: "#9d82e2", jac2: "#7c62c9", jac3: "#5a43a3",
-    face: "#f6ead0", hand: "#2d2118",
     maroon: "#8a1a36", maroonDk: "#5a0d22", gold: "#f2c14e", goldHi: "#ffe48a", goldDk: "#b5841f",
     ibis: "#f4f1ea", ibisDk: "#1e1b1a",
     ink: "#2a0610",
@@ -134,155 +132,357 @@ const Pixel = (() => {
     r.rect(x - 1, y + h, w + 2, 1, P.stoneHi);
   }
 
-  function buttress(r, x, y, h) {
-    r.rect(x, y + 1, 1, h - 1, C.stoneHi);
-    r.rect(x + 1, y + 1, 1, h - 1, C.stoneLo);
-    r.px(x, y, C.stoneHi);
-    r.rect(x - 1, y + h - 6, 1, 6, C.stoneHi);
-    r.rect(x + 2, y + h - 6, 1, 6, C.stoneLo);
+
+
+  /* ------------------------ St Paul's, across the quad ---------------- */
+
+  // Warm, weathered sandstone and pale slate, the way the quad looks on a sunny afternoon.
+  const P = {
+    stoneHi: "#ecc08f", stone: "#d49e68", stoneMid: "#c08956", stoneLo: "#a26d3f", stoneDk: "#6e4526", weather: "#b27a4a",
+    slateHi: "#d3ccd3", slate: "#b5adb7", slateMid: "#a29aa6", slateDk: "#847d8b",
+    glass: "#2c2f3d", glassHi: "#7d8cab", door: "#2e221d", pipe: "#4f3d33",
+    leaf: "#3f7a3a", leafHi: "#5a9a48", leafDk: "#2c5a2c",
+    bark: "#3b2d2b", barkHi: "#5b4744", jacDeep: "#46348a",
+  };
+
+  // Ashlar with a little weathering, so the walls aren't flat.
+  function wall(r, x, y, w, h, g) {
+    for (let j = 0; j < h; j++) {
+      for (let i = 0; i < w; i++) {
+        const px = x + i;
+        const py = y + j;
+        const n = Math.sin(px * 0.37 + py * 0.11) + Math.sin(px * 0.13 - py * 0.29) + Math.sin((px + py) * 0.07);
+        if (n > 1.6 && bayer(px, py) < 0.5) r.px(px, py, P.weather);
+        else stonePx(r, px, py, g, P);
+      }
+    }
   }
 
-  /* ---------------------------- the college ------------------------- */
-
-  // St Paul's. Symmetric about column cx; g is the ground line. The flagpole tops out at g - 84.
-  function college(r, cx, g) {
-    for (const side of [-1, 1]) {
-      const X = (x, w = 1) => (side < 0 ? x : 2 * cx - x - w + 1);
-
-      // slate roof behind each wing, hipped at the outer end
-      for (let j = 0; j <= 11; j++) {
-        const y = g - 35 - j;
-        const x0 = cx - 59 + j;
-        for (let x = x0; x <= cx - 12; x++) {
-          const xx = X(x);
-          const c = j === 11 ? C.slateHi : j === 0 ? C.slateDk : (xx + (y & 1) * 2) % 4 === 0 ? C.slateDk : C.slate;
-          r.px(xx, y, c);
-        }
+  // A pitched slate roof seen side-on, from the eaves row up to the ridge.
+  function roof(r, x0, x1, eave, ridge) {
+    for (let y = eave; y >= ridge; y--) {
+      const j = eave - y;
+      for (let x = x0; x <= x1; x++) {
+        let c = j % 3 === 0 || (x * 3 + (Math.floor(j / 3) & 1) * 2) % 5 === 0 ? P.slateMid : P.slate;
+        if (y === ridge) c = P.slateHi;
+        else if (j === 0) c = P.slateDk;
+        r.px(x, y, c);
       }
-
-      // chimney
-      r.rect(X(cx - 23, 4), g - 52, 4, 8, C.stone);
-      r.rect(X(cx - 23, 1), g - 52, 1, 8, C.stoneHi);
-      r.rect(X(cx - 24, 6), g - 54, 6, 2, C.stoneLo);
-      r.rect(X(cx - 23, 1), g - 56, 1, 2, C.stoneDk);
-      r.rect(X(cx - 20, 1), g - 56, 1, 2, C.stoneDk);
-
-      // dormers
-      for (const dx of [cx - 43, cx - 27]) {
-        r.rect(X(dx, 5), g - 41, 5, 6, C.stone);
-        r.rect(X(dx - 1, 7), g - 42, 7, 1, C.slateDk);
-        r.rect(X(dx, 5), g - 43, 5, 1, C.slate);
-        r.rect(X(dx + 1, 3), g - 44, 3, 1, C.slate);
-        r.px(X(dx + 2), g - 45, C.slateHi);
-        arch(r, X(dx + 1, 3), g - 40, 3, 4, C.glass);
-      }
-
-      // wing wall
-      ashlar(r, X(cx - 61, 50), g - 34, 50, 34, g);
-      r.rect(X(cx - 61, 50), g - 34, 50, 1, C.stoneHi);
-      r.rect(X(cx - 61, 50), g - 17, 50, 1, C.stoneHi);
-      r.rect(X(cx - 61, 50), g - 16, 50, 1, C.stoneLo);
-      r.rect(X(cx - 61, 50), g - 3, 50, 3, C.stoneLo);
-      for (const bx of [cx - 42, cx - 34, cx - 26, cx - 18]) {
-        lancet(r, X(bx, 3), g - 30, 3, 10);
-        lancet(r, X(bx, 3), g - 13, 3, 9);
-      }
-      for (const bx of [cx - 37, cx - 29, cx - 21]) buttress(r, X(bx, 2), g - 31, 31);
-
-      // gabled cross-wing at the outer end, 21 wide, centred on c0
-      const gx = cx - 65;
-      const c0 = X(gx + 10);
-      ashlar(r, X(gx, 21), g - 34, 21, 34, g);
-      for (let j = 0; j < 26; j++) {
-        const half = Math.round(10 * (1 - j / 26));
-        if (half <= 0) break;
-        const y = g - 35 - j;
-        for (let i = -half; i <= half; i++) {
-          if (Math.abs(i) >= half - 1) r.px(c0 + i, y, i < 0 ? C.stoneHi : C.stoneMid);
-          else stonePx(r, c0 + i, y, g);
-        }
-      }
-      r.rect(c0, g - 65, 1, 5, C.stoneHi);
-      r.px(c0, g - 66, C.stoneMid);
-      r.rect(X(gx, 2), g - 34, 2, 34, C.stoneHi);
-      r.rect(X(gx + 19, 2), g - 34, 2, 34, C.stoneLo);
-      r.rect(X(gx, 21), g - 17, 21, 1, C.stoneHi);
-      r.rect(X(gx, 21), g - 16, 21, 1, C.stoneLo);
-      r.rect(X(gx, 21), g - 3, 21, 3, C.stoneLo);
-      // great window with a mullion, transom and little rose
-      arch(r, c0 - 4, g - 33, 9, 16, C.stoneLo);
-      arch(r, c0 - 3, g - 32, 7, 15, C.glass);
-      r.rect(c0 - 1, g - 30, 3, 3, C.stoneLo);
-      r.px(c0, g - 29, C.glassHi);
-      r.rect(c0, g - 27, 1, 10, C.stoneLo);
-      r.rect(c0 - 3, g - 23, 7, 1, C.stoneLo);
-      r.px(c0 - 3, g - 26, C.glassHi);
-      r.rect(c0 - 4, g - 17, 9, 1, C.stoneHi);
-      lancet(r, c0 - 6, g - 13, 3, 9);
-      lancet(r, c0 + 4, g - 13, 3, 9);
     }
-
-    // central tower, 23 wide
-    const tx = cx - 11;
-    ashlar(r, tx, g - 65, 23, 65, g);
-    for (const bx of [tx, tx + 20]) {
-      r.rect(bx, g - 65, 1, 65, C.stoneHi);
-      r.rect(bx + 1, g - 65, 1, 65, C.stone);
-      r.rect(bx + 2, g - 65, 1, 65, C.stoneLo);
-    }
-    for (const y of [g - 19, g - 38]) {
-      r.rect(tx - 1, y, 25, 1, C.stoneHi);
-      r.rect(tx, y + 1, 23, 1, C.stoneLo);
-    }
-    r.rect(tx - 1, g - 3, 25, 3, C.stoneLo);
-
-    // door and lamps
-    arch(r, cx - 4, g - 16, 9, 16, C.stoneLo);
-    arch(r, cx - 3, g - 15, 7, 15, C.door);
-    r.rect(cx - 1, g - 11, 1, 11, C.doorDk);
-    r.rect(cx + 1, g - 11, 1, 11, C.doorDk);
-    r.px(cx + 2, g - 6, C.gold);
-    r.rect(cx - 5, g - 1, 11, 1, C.stoneHi);
-    for (const lx of [cx - 7, cx + 7]) {
-      r.rect(lx, g - 12, 1, 2, C.stoneDk);
-      r.px(lx, g - 11, C.goldDk);
-    }
-
-    lancet(r, cx - 5, g - 35, 3, 11);
-    lancet(r, cx + 3, g - 35, 3, 11);
-
-    // clock (hands are drawn live)
-    disc(r, cx, g - 50, 4, C.stoneLo);
-    disc(r, cx, g - 50, 3, C.face);
-    for (const [dx, dy] of [[0, -3], [3, 0], [0, 3], [-3, 0]]) r.px(cx + dx, g - 50 + dy, C.stoneMid);
-
-    // belfry openings with louvres
-    for (const bx of [cx - 5, cx + 3]) {
-      arch(r, bx - 1, g - 63, 5, 8, C.stoneLo);
-      arch(r, bx, g - 62, 3, 7, C.glass);
-      r.rect(bx, g - 58, 3, 1, C.stoneLo);
-      r.rect(bx, g - 56, 3, 1, C.stoneLo);
-    }
-
-    // cornice, battlements, corner pinnacles, flagpole
-    r.rect(tx - 1, g - 66, 25, 1, C.stoneHi);
-    r.rect(tx - 1, g - 65, 25, 1, C.stoneLo);
-    for (let i = 0; i < 23; i++) {
-      if (i % 5 >= 3) continue;
-      r.rect(tx + i, g - 70, 1, 4, C.stone);
-      r.px(tx + i, g - 70, C.stoneHi);
-    }
-    for (const px of [tx + 1, tx + 21]) {
-      r.rect(px - 1, g - 74, 3, 4, C.stone);
-      r.rect(px - 1, g - 74, 1, 4, C.stoneHi);
-      r.rect(px + 1, g - 74, 1, 4, C.stoneLo);
-      r.rect(px, g - 79, 1, 5, C.stoneHi);
-      r.px(px, g - 80, C.stoneMid);
-    }
-    r.rect(cx, g - 84, 1, 14, C.stoneDk);
   }
 
-  /* ------------------------- grounds and trees ---------------------- */
+  // A gable face rising from the eaves, with coping stones along both edges.
+  function gable(r, cx, half, eave, rise, g) {
+    for (let j = 0; j <= rise; j++) {
+      const h = Math.round(half * (1 - j / rise));
+      const y = eave - j;
+      for (let i = -h - 1; i <= h + 1; i++) {
+        if (i <= -h) r.px(cx + i, y, P.stoneHi);
+        else if (i >= h) r.px(cx + i, y, P.stoneLo);
+        else wall(r, cx + i, y, 1, 1, g);
+      }
+    }
+    r.rect(cx, eave - rise - 2, 1, 2, P.stoneHi);
+  }
+
+  function chimney(r, x, top, base) {
+    r.rect(x, top, 3, base - top, P.stone);
+    r.rect(x, top, 1, base - top, P.stoneHi);
+    r.rect(x + 2, top, 1, base - top, P.stoneLo);
+    for (let y = top + 3; y < base; y += 4) r.rect(x + 1, y, 1, 1, P.stoneMid);
+    r.rect(x - 1, top - 1, 5, 1, P.stoneHi);
+    r.rect(x - 1, top, 5, 1, P.stoneLo);
+    r.px(x + 1, top - 2, P.stoneDk);
+  }
+
+  // A group of narrow lancets. Each entry is [x] or [x, its own top].
+  function lancets(r, xs, top, bottom) {
+    for (const [x, t = top] of xs) lancet(r, x, t, 2, bottom - t, P);
+  }
+
+  /* ----------------------- the wings, in perspective ------------------ */
+
+  // The two side wings run from the back corners of the quad out towards you.
+  // Each screen column x sits at scale s (1 at the back corner, bigger as the
+  // wall gets closer). u is the distance along the wall and v the height up it,
+  // both in back-range pixels, so the wing faces are drawn by sampling (u, v).
+  const EYE = 10; // eye height above the lawn, in back-range pixels
+
+  // The right wing is on the shady side.
+  const PS = { ...P, stoneHi: "#d9a676", stone: "#c08b5a", stoneMid: "#ab7a4c", stoneLo: "#8f6038", weather: "#a06d42" };
+
+  function stoneAt(Q, u, v, x, y) {
+    const course = Math.floor(v) % 4 === 0;
+    const joint = (Math.floor(u) + ((Math.floor(v) >> 2) & 1) * 3) % 7 === 0;
+    if ((course && bayer(x, y) < 0.55) || (joint && bayer(x, y) < 0.35)) return Q.stoneMid;
+    const n = Math.sin(u * 0.37 + v * 0.11) + Math.sin(u * 0.13 - v * 0.29);
+    return n > 1.5 && bayer(x, y) < 0.5 ? Q.weather : Q.stone;
+  }
+
+  // Inside a pointed lancet w wide, centred on uc, running from v0 up to v1?
+  function inLancet(u, v, uc, w, v0, v1) {
+    if (v < v0 || v > v1) return false;
+    const taper = v > v1 - w ? (v1 - v) / w : 1;
+    return Math.abs(u - uc) < (w / 2) * taper;
+  }
+
+  function slateAt(v, top, x, y) {
+    if (v > top - 0.8) return P.slateHi;
+    return Math.floor(v) % 3 === 0 || (x * 3 + y) % 7 === 0 ? P.slateMid : P.slate;
+  }
+
+  function glassAt(u, v, uc, v1) {
+    return v > v1 - 2 && u < uc ? P.glassHi : P.glass;
+  }
+
+  // Left: the residential wing, two storeys and attic dormers, chimneys at both ends.
+  function leftWing(u, v, x, y, len) {
+    const Q = P;
+    for (const cu of [7, len - 5]) {
+      if (Math.abs(u - cu) < 2.2 && v >= 30 && v < 53) return v > 51.8 ? Q.stoneDk : v > 50.5 ? Q.stoneHi : u < cu - 1 ? Q.stoneHi : u > cu + 1.2 ? Q.stoneLo : Q.stone;
+    }
+    const dc = 14 + Math.round((u - 14) / 20) * 20;
+    const du = Math.abs(u - dc);
+    if (dc >= 14 && dc < len - 6 && du < 5 && v >= 31 && v < 47 - du * 1.4) {
+      if (inLancet(u, v, dc - 1.4, 1.8, 33, 43) || inLancet(u, v, dc + 1.4, 1.8, 33, 43)) return glassAt(u, v, dc, 43);
+      return du > 4 || v > 46 - du * 1.4 ? Q.stoneHi : stoneAt(Q, u, v, x, y);
+    }
+    if (v > 48) return null;
+    if (v >= 35) return slateAt(v, 48, x, y);
+    if (v > 34) return Q.stoneHi;
+    const wc = 5 + Math.round((u - 5) / 10) * 10;
+    for (const [v0, v1] of [[3, 12], [18, 28]]) {
+      if (inLancet(u, v, wc - 1.4, 1.9, v0, v1) || inLancet(u, v, wc + 1.4, 1.9, v0, v1)) return glassAt(u, v, wc, v1);
+    }
+    if (Math.abs(v - 15.5) < 0.5) return Q.stoneHi;
+    if (v < 1.5) return Q.stoneLo;
+    if (u < 0.8) return Q.stoneLo;
+    return stoneAt(Q, u, v, x, y);
+  }
+
+  // Right: the cloister arcade, then the chapel with its great traceried windows.
+  function rightWing(u, v, x, y, len) {
+    const Q = PS;
+    const split = Math.max(14, len * 0.45);
+    if (u < split) {
+      const bu = Math.round(u / 9) * 9;
+      if (bu > 0 && Math.abs(u - bu) < 0.9) {
+        if (v < 37) return u < bu ? Q.stoneHi : Q.stoneLo;
+        if (v < 43 - Math.abs(u - bu) * 4) return Q.stoneHi;
+      }
+      if (v > 46) return null;
+      if (v >= 36) return slateAt(v, 46, x, y);
+      if (v >= 34) return Math.floor(u) % 3 < 2 || v < 35 ? Q.stoneHi : null;
+      const ac = Math.floor(u / 9) * 9 + 4.5;
+      if (inLancet(u, v, ac, 6, 0, 13)) return v > 11 ? Q.stoneDk : P.door;
+      if (inLancet(u, v, ac, 2, 19, 30)) return glassAt(u, v, ac, 30);
+      if (Math.abs(v - 15.5) < 0.5) return Q.stoneHi;
+      if (v < 1.5) return Q.stoneLo;
+      return stoneAt(Q, u, v, x, y);
+    }
+    // a cross on the chapel's far end
+    if (u > len - 4 && ((Math.abs(u - (len - 2.5)) < 0.5 && v >= 56 && v < 63) || (Math.abs(v - 60) < 0.6 && Math.abs(u - (len - 2.5)) < 1.8))) return Q.stoneHi;
+    const ch = u - split;
+    const bu = split + Math.round(ch / 13) * 13;
+    if (Math.abs(u - bu) < 1.1) {
+      if (v < 44) return u < bu ? Q.stoneHi : Q.stoneLo;
+      if (v < 52 - Math.abs(u - bu) * 5) return Q.stoneHi;
+    }
+    if (v > 57) return null;
+    if (v >= 44) return slateAt(v, 57, x, y);
+    if (v > 43) return Q.stoneHi;
+    const wc = split + Math.floor(ch / 13) * 13 + 6.5;
+    if (inLancet(u, v, wc, 8, 7, 40)) {
+      const du = u - wc;
+      const ring = Math.hypot(du, v - 35.5);
+      if (Math.abs(du) < 0.45 || (v < 31 && Math.abs(Math.abs(du) - 2.1) < 0.4) || Math.abs(v - 21) < 0.5) return Q.stoneLo;
+      if (ring > 1 && ring < 1.8) return Q.stoneLo;
+      const k = bayer(x, y);
+      return k < 0.08 ? "#b0465a" : k < 0.15 ? "#5a7fb8" : k < 0.19 ? "#d8b45a" : P.glass;
+    }
+    if (Math.abs(v - 5.5) < 0.5) return Q.stoneHi;
+    if (v < 1.5) return Q.stoneLo;
+    return stoneAt(Q, u, v, x, y);
+  }
+
+  // Draw one wing. Returns nothing; the lawn is laid afterwards below groundAt().
+  function wing(r, cx, g, half, side) {
+    const sEdge = (side < 0 ? cx + 0.5 : r.w - cx - 0.5) / half;
+    const len = 2 * half * (1 - 1 / sEdge);
+    const x0 = side < 0 ? 0 : cx + half + 1;
+    const x1 = side < 0 ? cx - half - 1 : r.w - 1;
+    for (let x = x0; x <= x1; x++) {
+      const s = Math.abs(x + 0.5 - (cx + 0.5)) / half;
+      const u = 2 * half * (1 - 1 / s);
+      const top = Math.floor(g - EYE + (EYE - 64) * s);
+      const base = groundAt(x, cx, g, half);
+      for (let y = top; y <= base; y++) {
+        const v = EYE - (y + 0.5 - g + EYE) / s;
+        const c = side < 0 ? leftWing(u, v, x, y, len) : rightWing(u, v, x, y, len);
+        if (c) r.px(x, y, c);
+      }
+    }
+  }
+
+  // Where the lawn meets the buildings: flat along the back range, sloping down the wings.
+  function groundAt(x, cx, g, half) {
+    const s = Math.abs(x + 0.5 - (cx + 0.5)) / half;
+    return s <= 1 ? g - 1 : Math.round(g - EYE + EYE * s) - 1;
+  }
+
+  // A dark green tree peeking over the roof.
+  function greenTree(r, x, cy, R, rand) {
+    for (let dy = -R; dy <= R; dy++) {
+      for (let dx = -R - 2; dx <= R + 2; dx++) {
+        const d = Math.hypot(dx / 1.2, dy) + (rand() - 0.5) * 1.6;
+        if (d > R) continue;
+        const s = -dx / R - dy / R + (rand() - 0.5) * 0.8;
+        r.px(x + dx, cy + dy, s > 0.7 ? P.leafHi : s > -0.4 ? P.leaf : P.leafDk);
+      }
+    }
+  }
+
+  // St Paul's quad. The back range has a central gable, two tall chimneys and
+  // gabled dormers, and grows extra bays on wide screens; the wings wrap round
+  // towards you on either side. Symmetric about cx; g is the ground.
+  function college(r, cx, g, half, rand) {
+    wing(r, cx, g, half, -1);
+    wing(r, cx, g, half, 1);
+
+    greenTree(r, cx - 27, g - 50, 9, rand);
+    roof(r, cx - half, cx + half, g - 35, g - 49);
+    for (const s of [-1, 1]) chimney(r, cx + s * 15 - 1, g - 67, g - 48);
+
+    wall(r, cx - half, g - 34, half * 2 + 1, 34, g);
+    r.rect(cx - half, g - 34, half * 2 + 1, 1, P.stoneHi);
+    r.rect(cx - half, g - 18, half * 2 + 1, 1, P.stoneHi);
+    r.rect(cx - half, g - 17, half * 2 + 1, 1, P.stoneLo);
+    r.rect(cx - half, g - 2, half * 2 + 1, 2, P.stoneLo);
+
+    for (const s of [-1, 1]) {
+      for (let d = 23; d + 7 <= half; d += 26) {
+        // gabled dormers with paired lancets breaking the eaves, a triplet below
+        const dx = cx + s * d;
+        wall(r, dx - 6, g - 40, 13, 6, g);
+        gable(r, dx, 6, g - 41, 8, g);
+        lancets(r, [[dx - 2], [dx + 1]], g - 42, g - 27);
+        lancets(r, [[dx - 4], [dx - 1], [dx + 2]], g - 14, g - 4);
+        if (d + 10 <= half) {
+          r.rect(dx + s * 9, g - 34, 1, 34, P.pipe);
+          r.rect(dx + s * 9 - (s < 0 ? 1 : 0), g - 34, 2, 2, P.pipe);
+        }
+      }
+      for (let d = 36; d + 4 <= half; d += 26) {
+        const p = cx + s * d;
+        lancets(r, [[p - 2], [p + 1]], g - 14, g - 4);
+        lancets(r, [[p - 2], [p + 1]], g - 30, g - 21);
+      }
+    }
+
+    // the central gable bay, a touch proud of the range
+    wall(r, cx - 12, g - 34, 25, 34, g);
+    r.rect(cx - 13, g - 34, 1, 34, P.stoneHi);
+    r.rect(cx + 13, g - 34, 1, 34, P.stoneLo);
+    r.rect(cx - 13, g - 18, 27, 1, P.stoneHi);
+    r.rect(cx - 13, g - 17, 27, 1, P.stoneLo);
+    r.rect(cx - 13, g - 2, 27, 2, P.stoneLo);
+    gable(r, cx, 12, g - 35, 24, g);
+    lancets(r, [[cx - 5, g - 36], [cx - 2, g - 39], [cx + 1, g - 39], [cx + 4, g - 36]], 0, g - 22);
+    arch(r, cx - 4, g - 15, 9, 15, P.stoneLo);
+    arch(r, cx - 3, g - 14, 7, 14, P.door);
+    r.rect(cx - 5, g - 1, 11, 1, P.stoneHi);
+  }
+
+  /* ---------------------- the lawn and the jacarandas ---------------- */
+
+  function line(x0, y0, x1, y1, fn) {
+    const n = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0), 1);
+    for (let i = 0; i <= n; i++) fn(Math.round(x0 + ((x1 - x0) * i) / n), Math.round(y0 + ((y1 - y0) * i) / n));
+  }
+
+  // One of the two big jacarandas: a broad, lumpy canopy in full bloom,
+  // dark boughs showing through underneath. x is the trunk, g the ground.
+  function bigJacaranda(r, x, g, rx, ry, rand) {
+    const th = Math.round(ry * 0.5);
+    const cy = g - th - ry + 2;
+    const clumps = [[0, 0, rx * 0.5]];
+    for (let i = 0; i < 28; i++) {
+      const a = rand() * Math.PI * 2;
+      const d = Math.sqrt(rand()) * 0.78;
+      clumps.push([Math.cos(a) * d * rx, Math.sin(a) * d * ry * 0.85, (0.2 + rand() * 0.15) * rx]);
+    }
+    const inside = (dx, dy) => clumps.some(([bx, by, br]) => (dx - bx) ** 2 + (dy - by) ** 2 <= br * br);
+    const boughs = [-150, -125, -100, -78, -55, -32].map((deg) => {
+      const a = ((deg + (rand() - 0.5) * 14) * Math.PI) / 180;
+      const len = rx * (0.5 + rand() * 0.3);
+      return [x + 1 + Math.cos(a) * len, g - th + 2 + Math.sin(a) * len * 0.9];
+    });
+
+    // trunk and boughs
+    r.rect(x, g - th, 3, th, P.bark);
+    r.rect(x, g - th, 1, th, P.barkHi);
+    r.px(x - 1, g - 1, P.bark);
+    r.px(x + 3, g - 1, P.bark);
+    for (const [bx, by] of boughs) line(x + 1, g - th + 2, bx, by, (px, py) => { r.px(px, py, P.bark); r.px(px, py + 1, P.bark); });
+
+    // the bloom
+    for (let dy = -ry - 6; dy <= ry + 4; dy++) {
+      for (let dx = -rx - 6; dx <= rx + 6; dx++) {
+        if (!inside(dx, dy)) continue;
+        const edge = !inside(dx - 1, dy) || !inside(dx + 1, dy) || !inside(dx, dy - 1) || !inside(dx, dy + 1);
+        if (edge && rand() < 0.3) continue;
+        // little gaps in the bloom: sky along the top, shadow lower down
+        const px = x + 1 + dx;
+        const py = cy + dy;
+        const far = (dx / rx) ** 2 + (dy / ry) ** 2;
+        if (far > 0.35 && Math.sin(px * 0.9 + py * 0.5) + Math.sin(px * 0.31 - py * 0.77) > 1.5 - far * 0.4) {
+          if (dy > -ry * 0.45) r.px(px, py, P.jacDeep);
+          continue;
+        }
+        let hl = -1;
+        for (const [bx, by, br] of clumps) {
+          if ((dx - bx) ** 2 + (dy - by) ** 2 <= br * br) hl = Math.max(hl, (by - dy) / br);
+        }
+        const s = (-dx / rx) * 0.35 - (dy / ry) * 0.55 + hl * 0.6 + (rand() - 0.5) * 0.45;
+        const c = edge && s < 0.2 ? C.jac3 : s > 0.85 ? C.jacHi : s > 0.3 ? C.jac1 : s > -0.25 ? C.jac2 : s > -0.7 ? C.jac3 : P.jacDeep;
+        r.px(px, py, c);
+      }
+    }
+    // boughs showing through the shadowed underside
+    for (const [bx, by] of boughs) {
+      line(x + 1, g - th + 2, bx, by, (px, py) => { if (py > cy + 2 && bayer(px, py) < 0.6) r.px(px, py, P.bark); });
+    }
+  }
+
+  // The near layer: the quad wrapped around its lawn, and the two jacarandas.
+  function nearLayer(W, cx, g, h, half, rand) {
+    const r = raster(W, h);
+    college(r, cx, g, half, rand);
+    for (let x = 0; x < W; x++) {
+      const top = groundAt(x, cx, g, half) + 1;
+      for (let y = top; y < h; y++) r.px(x, y, y === top ? C.lawnDk : Math.floor((y - g - 1) / 7) % 2 ? "#64a341" : C.lawnHi);
+      // a paved path along the foot of the cloister
+      if (x > cx + half) {
+        const w = Math.round((x - cx) / half * 2);
+        for (let y = top; y < top + w; y++) r.px(x, y, y === top + w - 1 ? "#a99a7c" : "#cdbd9c");
+      }
+    }
+    const rx = clamp(Math.round(W * 0.15), 18, 32);
+    const ry = Math.round(rx * 1.25);
+    for (const s of [-1, 1]) {
+      const tx = cx + s * half;
+      // a soft shadow and fallen flowers under each tree
+      for (let y = g + 1; y < g + 7; y++) {
+        const w = rx * 0.95 * Math.sqrt(Math.max(0, 1 - ((y - g - 3) / 3.5) ** 2));
+        for (let x = Math.round(tx - w); x <= tx + w; x++) if (bayer(x, y) < 0.6) r.px(x + 1, y + 2, C.lawnLo);
+      }
+      blossoms(r, tx + 1, g + 5, rx, rand);
+      bigJacaranda(r, tx, g + 3, rx, ry, rand);
+    }
+    return r.canvas();
+  }
+
+  /* ---------------------------- small trees ------------------------- */
 
   function jacaranda(r, x, base, size, rand, trunk = true, P = C) {
     const th = Math.round(size * 0.45);
@@ -311,57 +511,6 @@ const Pixel = (() => {
     for (let k = 0; k < size * 2; k++) {
       r.px(x + (rand() - 0.5) * size * 1.7, base + (rand() - 0.5) * 5, rand() < 0.5 ? C.jac1 : C.jac2);
     }
-  }
-
-  function grounds(r, cx, g, H) {
-    const wallTop = H - 7;
-    for (let y = g; y < wallTop; y++) {
-      const band = Math.floor(Math.sqrt((y - g) * 2.4));
-      r.rect(0, y, r.w, 1, band % 2 ? C.lawn : C.lawnLo);
-    }
-    r.rect(cx - 66, g, 133, 1, C.lawnDk);
-    for (let y = g; y < H; y++) {
-      const half = Math.round(3 + (y - g) * 0.45);
-      r.rect(cx - half, y, half * 2 + 1, 1, C.path);
-      r.px(cx - half, y, C.pathLo);
-      r.px(cx + half, y, C.pathLo);
-    }
-    // low sandstone wall with a gateway
-    const gap = Math.round(3 + (wallTop - g) * 0.45) + 1;
-    for (let x = 0; x < r.w; x++) {
-      if (Math.abs(x - cx) <= gap) continue;
-      r.px(x, wallTop, C.stoneHi);
-      r.px(x, wallTop + 1, C.stoneMid);
-      for (let y = wallTop + 2; y < H - 1; y++) stonePx(r, x, y, H);
-      r.px(x, H - 1, C.stoneDk);
-    }
-    for (const side of [-1, 1]) {
-      const px = cx + side * (gap + 2);
-      r.rect(px - 1, wallTop - 5, 3, 12, C.stone);
-      r.rect(px - 1, wallTop - 5, 1, 12, C.stoneHi);
-      r.rect(px + 1, wallTop - 5, 1, 12, C.stoneLo);
-      r.rect(px - 2, wallTop - 6, 5, 1, C.stoneHi);
-      r.px(px, wallTop - 7, C.stoneHi);
-      r.px(px, wallTop - 8, C.stoneMid);
-    }
-  }
-
-  // The near layer: the college, its lawn and the jacarandas.
-  function nearLayer(W, cx, g, h, rand) {
-    const r = raster(W, h);
-    college(r, cx, g);
-    grounds(r, cx, g, h);
-    const trees = [];
-    for (let k = 0, d = 78; d < W / 2 + 30; k++, d += 40 + Math.round(rand() * 6)) {
-      for (const side of [-1, 1]) trees.push([cx + side * d, g + 3 + (k % 2) * 2, 22 + Math.round(rand() * 8)]);
-    }
-    // Narrow screens crop the outer gables, so frame them with a jacaranda each side.
-    if (W < 190) for (const side of [-1, 1]) trees.push([cx + side * (cx - 7), g + 9, 27]);
-    for (const [x, base, size] of trees) {
-      blossoms(r, x, base + 1, size, rand);
-      jacaranda(r, x, base, size, rand);
-    }
-    return r.canvas();
   }
 
   /* ------------------------ Sydney Uni, further back ----------------- */
@@ -454,7 +603,7 @@ const Pixel = (() => {
       }
     }
 
-    const tx = cx + 26;
+    const tx = cx + 40;
     const hx = cx - 54;
     const q0 = hx + 11;
     const q1 = Math.min(W + 4, cx + 120);
@@ -1008,8 +1157,6 @@ const Pixel = (() => {
   let effects = [];
   let frame = 0;
   let lastTick = 0;
-  let clockAt = -1;
-  let clock = [0, 0];
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
   const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
 
@@ -1050,7 +1197,8 @@ const Pixel = (() => {
     const cityRow = base - TOP * K - 40;
     const rand = rng(1854);
 
-    const nearG = 90;
+    const nearG = 120;
+    const half = clamp(Math.round(W / 3.6), 30, 110);
     const midG = 84;
     const farH = 52;
     const sky = skyLayer(W, SH, (row) => (base - row) / K, cx, cityRow, rand);
@@ -1059,7 +1207,7 @@ const Pixel = (() => {
     S = {
       W, H, cx, Gy0, rest, camMax, base, cityRow, scale,
       sky: sky.canvas, twinkles: sky.twinkles, sparkles,
-      near: nearLayer(W, cx, nearG, nearG + (H - Gy0), rand), nearG,
+      near: nearLayer(W, cx, nearG, nearG + (H - Gy0), half, rand), nearG,
       mid: midLayer(W, cx, midG, midG + H, rand), midG,
       far: farLayer(W, farH + H, farH, rand), farH,
       clouds: makeClouds(W, rand),
@@ -1136,32 +1284,31 @@ const Pixel = (() => {
     ctx.drawImage(S.moon, Math.round(S.W * 0.24) - 13, y - 13);
   }
 
-  function sydneyTime() {
-    if (frame - clockAt >= 64 || clockAt < 0) {
-      const parts = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, hour: "numeric", minute: "numeric", hourCycle: "h23" }).formatToParts(new Date());
-      clock = [+parts.find((p) => p.type === "hour").value, +parts.find((p) => p.type === "minute").value];
-      clockAt = frame;
-    }
-    return clock;
-  }
+  // Students sitting in a circle on the lawn: [dx, dy, shirt, skin, legs].
+  const STUDENTS = [
+    [-8, 1, "#ffffff", "#e9b48a", "#e9b48a"], [-5, -1, "#7a1630", "#c68a5e", "#3a4a6a"], [-1, -2, "#2d3e6e", "#e9c08a", "#e9c08a"],
+    [3, -1, "#f2c14e", "#8a5a3c", "#3a4a6a"], [6, 1, "#e98fae", "#e9b48a", "#e9b48a"], [-4, 2, "#d9dde6", "#e9c08a", "#2a2a3a"],
+    [1, 2, "#ffffff", "#c68a5e", "#e9c08a"],
+  ];
 
   function collegeLive(g) {
     const { cx } = S;
-    // the tower clock shows the real time in Sydney
-    const [h, m] = sydneyTime();
-    ctx.fillStyle = C.hand;
-    const hand = (a, len) => {
-      for (let l = 1; l <= len; l++) ctx.fillRect(cx + Math.round(Math.sin(a) * l), g - 50 - Math.round(Math.cos(a) * l), 1, 1);
-    };
-    hand((m / 60) * Math.PI * 2, 3);
-    hand((((h % 12) + m / 60) / 12) * Math.PI * 2, 2);
-    ctx.fillRect(cx, g - 50, 1, 1);
-    // maroon and gold on the flagpole
-    for (let i = 0; i < 8; i++) {
-      const off = reduced.matches || i < 2 ? 0 : Math.round(Math.sin(frame * 0.45 - i * 0.9) * 0.6 + 0.3);
-      for (let j = 0; j < 5; j++) {
-        ctx.fillStyle = j === 2 ? C.gold : C.maroon;
-        ctx.fillRect(cx + 1 + i, g - 84 + j + off, 1, 1);
+    // the students, one of them waving now and then
+    for (const [i, [dx, dy, shirt, skin, legs]] of STUDENTS.entries()) {
+      const x = cx - 1 + dx;
+      const y = g + 7 + dy;
+      ctx.fillStyle = skin;
+      ctx.fillRect(x + 1, y, 1, 1);
+      ctx.fillStyle = shirt;
+      ctx.fillRect(x, y + 1, 3, 1);
+      ctx.fillRect(x + 1, y + 2, 1, 1);
+      ctx.fillStyle = legs;
+      ctx.fillRect(x, y + 3, 3, 1);
+      if (i === 1 && !reduced.matches && frame % 48 < 8) {
+        ctx.fillStyle = shirt;
+        ctx.fillRect(x - 1, y, 1, 1);
+        ctx.fillStyle = skin;
+        ctx.fillRect(x - 1, y - 1 - (frame % 4 < 2 ? 0 : 1), 1, 1);
       }
     }
     // an ibis pottering about the lawn
@@ -1169,7 +1316,7 @@ const Pixel = (() => {
     const moving = !reduced.matches && b.rest <= 0;
     if (moving) {
       b.x += b.dir * 0.25;
-      if (b.x > cx - 14 || b.x < cx - 46) b.dir *= -1;
+      if (b.x > cx - 16 || b.x < cx - 50) b.dir *= -1;
       if (frame % 97 === 0) b.rest = 24;
     } else b.rest--;
     pixels(IBIS[moving ? Math.floor(frame / 3) % 2 : 0], { W: C.ibis, K: C.ibisDk }, Math.floor(b.x), g + 6, b.dir > 0);
@@ -1274,9 +1421,9 @@ const Pixel = (() => {
     clouds(false);
 
     // Further things sink more slowly as you rise, so the uni and then the city come into view.
-    const farY = S.Gy0 + 6 - S.farH + Math.round(c * 0.18);
+    const farY = S.Gy0 + 10 - S.farH + Math.round(c * 0.18);
     if (farY < H) ctx.drawImage(S.far, 0, farY);
-    const midY = S.Gy0 + 10 - S.midG + Math.round(c * 0.35);
+    const midY = S.Gy0 + 34 - S.midG + Math.round(c * 0.35);
     if (midY < H) ctx.drawImage(S.mid, 0, midY);
     const nearY = S.Gy0 - S.nearG + c;
     if (nearY < H) {
