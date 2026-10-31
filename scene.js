@@ -454,7 +454,50 @@ const Pixel = (() => {
     }
   }
 
-  // The near layer: the quad wrapped around its lawn, and the two jacarandas.
+  // Distance from (px, py) to the segment from (ax, ay) to (bx, by).
+  function segDist(px, py, ax, ay, bx, by) {
+    const dx = bx - ax;
+    const dy = by - ay;
+    const t = clamp(((px - ax) * dx + (py - ay) * dy) / (dx * dx + dy * dy), 0, 1);
+    return Math.hypot(px - (ax + t * dx), py - (ay + t * dy));
+  }
+
+  // Sandstone paving: two paths fan out from the front door to the corners,
+  // meeting a straight path across the front of the lawn.
+  function footpaths(r, cx, g, half) {
+    const cross = g + 40;
+    for (let y = g; y < r.h; y++) {
+      const depth = clamp((y - g) / (cross - g), 0, 1);
+      const w = 1.2 + depth * 2.3; // paths widen as they come towards you
+      for (let x = 0; x < r.w; x++) {
+        if (y <= groundAt(x, cx, g, half)) continue;
+        const d = Math.min(segDist(x, y, cx - 2, g, -1, cross), segDist(x, y, cx + 2, g, r.w, cross));
+        const across = Math.abs(y - cross);
+        let edge;
+        if (d < w) edge = d > w - 0.9;
+        else if (across <= 2.5) edge = across > 1.6;
+        else continue;
+        r.px(x, y, edge ? "#b39d74" : bayer(x * 3, y) < 0.2 ? "#c9b185" : "#dcc69c");
+      }
+    }
+  }
+
+  // A wooden slatted bench with iron legs, about 11 wide; (x, y) is its top-left.
+  function bench(r, x, y) {
+    const wood = "#9a6338";
+    r.rect(x + 1, y, 9, 1, "#b07444");
+    r.rect(x + 1, y + 1, 9, 1, "#5e3a20");
+    r.rect(x + 1, y + 2, 9, 1, wood);
+    r.rect(x, y + 3, 11, 1, "#c08552");
+    r.rect(x, y + 4, 11, 1, "#5e3a20");
+    for (const lx of [x + 1, x + 9]) {
+      r.rect(lx, y, 1, 7, "#2f2622");
+    }
+    r.px(x + 1, y + 6, "#2f2622");
+    r.px(x + 9, y + 6, "#2f2622");
+  }
+
+  // The near layer: the quad wrapped around its lawn, the footpaths, and the two jacarandas.
   function nearLayer(W, cx, g, h, half, rand) {
     const r = raster(W, h);
     college(r, cx, g, half, rand);
@@ -469,15 +512,21 @@ const Pixel = (() => {
     }
     const rx = clamp(Math.round(W * 0.15), 18, 32);
     const ry = Math.round(rx * 1.25);
+    // soft shadows under the trees, then the paths over the grass
     for (const s of [-1, 1]) {
       const tx = cx + s * half;
-      // a soft shadow and fallen flowers under each tree
       for (let y = g + 1; y < g + 7; y++) {
         const w = rx * 0.95 * Math.sqrt(Math.max(0, 1 - ((y - g - 3) / 3.5) ** 2));
         for (let x = Math.round(tx - w); x <= tx + w; x++) if (bayer(x, y) < 0.6) r.px(x + 1, y + 2, C.lawnLo);
       }
+    }
+    footpaths(r, cx, g, half);
+    for (const s of [-1, 1]) {
+      const tx = cx + s * half;
       blossoms(r, tx + 1, g + 5, rx, rand);
       bigJacaranda(r, tx, g + 3, rx, ry, rand);
+      // a bench in the shade on the outer side of each trunk
+      bench(r, s < 0 ? tx - 14 : tx + 5, g + 2);
     }
     return r.canvas();
   }
@@ -1142,7 +1191,7 @@ const Pixel = (() => {
 
   const TIER_ICON = { 0: "miss", 1: "wine", 2: "rings", 3: "piano", 4: "chalice", 5: "swords" };
   // Where the balloon sits on screen, as a share of the height. Ground = parked on the lawn.
-  const ANCHOR = { play: 0.8, summit: 0.84 };
+  const ANCHOR = { play: 0.8, summit: 0.72 };
 
   let canvas = null;
   let ctx = null;
@@ -1296,7 +1345,7 @@ const Pixel = (() => {
     // the students, one of them waving now and then
     for (const [i, [dx, dy, shirt, skin, legs]] of STUDENTS.entries()) {
       const x = cx - 1 + dx;
-      const y = g + 7 + dy;
+      const y = g + 10 + dy;
       ctx.fillStyle = skin;
       ctx.fillRect(x + 1, y, 1, 1);
       ctx.fillStyle = shirt;

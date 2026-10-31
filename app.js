@@ -265,7 +265,6 @@ function esc(s) {
   return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
 
-const flashEl = document.getElementById("flash");
 let later = []; // timeouts that belong to the current screen
 
 // view: "ground" (parked on the lawn, with the title), "play" or "summit" (the results).
@@ -274,7 +273,6 @@ function show(html, view = "ground", ed = "") {
   clearInterval(countdownId);
   later.forEach(clearTimeout);
   later = [];
-  flashEl.hidden = true;
   document.body.dataset.view = view;
   Pixel.setView(view);
   app.innerHTML = (view === "ground" ? `
@@ -322,15 +320,6 @@ function trailTo(count) {
     sum += r.points;
     return { a: altOf(sum), tier: r.tier };
   });
-}
-
-function flashBand(band) {
-  flashEl.innerHTML = `<small>New height</small>${esc(band.name)}`;
-  flashEl.hidden = false;
-  flashEl.classList.remove("go");
-  void flashEl.offsetWidth; // restart the animation
-  flashEl.classList.add("go");
-  after(2600, () => { flashEl.hidden = true; });
 }
 
 // Tick a number up alongside the climb.
@@ -402,24 +391,29 @@ function edition() {
   return `No. ${puzzle.number} · ${fmtDate(puzzle.date, true)}${MODE === "preview" ? " · Preview" : ""}`;
 }
 
-function topbar() {
+// The strip along the top while you play: altitude, progress, and the crest home.
+function hud() {
   const n = puzzle.questions.length;
   const total = totalOf(game);
   const pips = puzzle.questions.map((_, i) => {
     const r = game.results[i];
     if (i < game.index || (i === game.index && game.phase === "reveal")) {
-      return `<li class="pip done" title="${esc(TIERS[r.tier].name)}">${Pixel.tier(r.tier, 2)}</li>`;
+      return `<li class="pip done" title="${esc(TIERS[r.tier].name)}">${Pixel.tier(r.tier, 1)}</li>`;
     }
-    return `<li class="pip${i === game.index ? " now" : ""}"><span></span></li>`;
+    return `<li class="pip${i === game.index ? " now" : ""}"></li>`;
   }).join("");
   return `
-    <header class="topbar">
-      <a class="crest" href="./" aria-label="${esc(CONFIG.name)}">${Pixel.sprite("cross", 2)}</a>
-      <ol class="pips" aria-label="Prompt ${game.index + 1} of ${n}">${pips}</ol>
-      <p class="alt" aria-label="Altitude ${total} metres">
-        <b><span class="alt-num">${total}</span><small>m</small></b>
+    <header class="hud">
+      <p class="gauge" aria-label="Altitude ${total} metres">
+        <small>Altitude</small>
+        <b><span class="alt-num">${total}</span>m</b>
         <em>${esc(bandFor(altOf(total)).name)}</em>
       </p>
+      <div class="progress">
+        <ol class="pips">${pips}</ol>
+        <small>Prompt ${game.index + 1} of ${n}</small>
+      </div>
+      <a class="crest" href="./" aria-label="${esc(CONFIG.name)}">${Pixel.sprite("cross", 2)}</a>
     </header>`;
 }
 
@@ -427,11 +421,11 @@ function statsStrip() {
   const s = stats();
   if (!s.played) return "";
   return `
-    <section class="stats" aria-label="Your stats">
-      <div><b>${s.played}</b><span>Played</span></div>
-      <div><b>${s.streak}</b><span>Streak</span></div>
-      <div><b>${s.best}<small>m</small></b><span>Best</span></div>
-    </section>`;
+    <p class="stats" aria-label="Your stats">
+      <span><b>${s.played}</b> played</span>
+      <span><b>${s.streak}</b> streak</span>
+      <span><b>${s.best}m</b> best</span>
+    </p>`;
 }
 
 function footer() {
@@ -451,31 +445,30 @@ function renderIntro() {
     <li class="rung lv${t}">
       ${Pixel.tier(t, 2)}
       <span class="rung-name">${TIERS[t].name}</span>
-      <span class="rung-pts">+${TIERS[t].points}<small>m</small></span>
+      <span class="rung-pts">+${TIERS[t].points}m</span>
     </li>`).join("");
-
-  const howTo = `
-    <ol class="rules">
-      <li><b>${n} prompt${n === 1 ? "" : "s"}</b>, ${CONFIG.secondsPerQuestion} seconds each, things like <i>“Name a cocktail.”</i></li>
-      <li>Every right answer lifts your balloon. The obvious ones barely clear the lawn; <b>rare ones soar.</b></li>
-      <li>Wrong guesses cost nothing. Keep going until the clock runs out; your first valid answer locks in.</li>
-      <li>Rise past Sydney Uni, the clouds, the sunset and the stars. A perfect day reaches <b>Jerusalem.</b></li>
-    </ol>
-    <ol class="ladder" aria-label="Metres by rarity">${ladder}</ol>`;
 
   Pixel.setTrail([]);
   Pixel.climbTo(0, true);
-  // Regulars get straight to the button; first-timers get the rules spelled out underneath.
   show(`
     ${banner()}
-    <section class="panel intro">
-      <p class="tab">Today's climb</p>
-      <p class="lede">${esc(CONFIG.tagline)}</p>
-      <button class="btn primary block" data-action="start">Start climbing</button>
-      <p class="sub">${n} prompts · ${CONFIG.secondsPerQuestion} seconds each</p>
-      ${stats().played ? `<details class="howto"><summary>How it works</summary>${howTo}</details>` : howTo}
+    <section class="dock">
+      <button class="btn primary big" data-action="start">▲ Start climbing ▲</button>
+      <p class="dock-sub">${n} prompts · ${CONFIG.secondsPerQuestion} seconds each · ${esc(CONFIG.tagline.toLowerCase())}</p>
+      ${statsStrip()}
+      <details class="howto">
+        <summary>How to play</summary>
+        <div class="sheet">
+          <ol class="rules">
+            <li>Each prompt is something like <i>“Name a cocktail.”</i> You've got ${CONFIG.secondsPerQuestion} seconds to type an answer.</li>
+            <li>Every right answer lifts your balloon. Obvious ones barely clear the lawn; rare ones soar.</li>
+            <li>Wrong guesses cost nothing. Your first answer that's on the list locks in.</li>
+            <li>Rise past Sydney Uni, the clouds, the sunset and the stars. A perfect day reaches Jerusalem.</li>
+          </ol>
+          <ol class="ladder" aria-label="Metres by rarity">${ladder}</ol>
+        </div>
+      </details>
     </section>
-    ${statsStrip()}
     ${footer()}
   `, "ground", edition());
 }
@@ -489,23 +482,26 @@ function renderQuestion() {
   Pixel.setTrail(trailTo(i));
   Pixel.climbTo(altOf(totalOf(game)), true);
   show(`
-    ${topbar()}
-    <section class="panel play">
-      <p class="tab">Prompt ${i + 1}/${n}</p>
-      <div class="timer" role="timer" aria-label="Seconds left">
-        <div class="timer-track"><div class="timer-fill"></div></div>
-        <span class="timer-num">${CONFIG.secondsPerQuestion}</span>
-      </div>
+    ${hud()}
+    <section class="card">
+      <p class="label">Prompt ${i + 1} of ${n}</p>
       <h2 class="prompt">${esc(q.prompt)}</h2>
-      <form class="guess" autocomplete="off">
-        <input id="guess" name="guess" type="text" maxlength="60" placeholder="Your answer…"
-          aria-label="Your answer" autocomplete="off" autocorrect="off" autocapitalize="words"
-          spellcheck="false" enterkeyhint="go">
-        <button class="btn primary" type="submit">Go</button>
-      </form>
-      <p class="feedback" aria-live="polite"></p>
-      <ul class="tried" aria-label="Guesses not on the list">${r.tried.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>
+      <p class="hint">▲ rarer answers climb higher ▲</p>
     </section>
+    <form class="answer-bar guess" autocomplete="off">
+      <div class="bar-inner">
+        <p class="feedback" aria-live="polite"></p>
+        <ul class="tried" aria-label="Guesses not on the list">${r.tried.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>
+        <div class="bar-row">
+          <div class="timer" role="timer" aria-label="Seconds left"><span class="timer-num">${CONFIG.secondsPerQuestion}</span></div>
+          <input id="guess" name="guess" type="text" maxlength="60" placeholder="your answer…"
+            aria-label="Your answer" autocomplete="off" autocorrect="off" autocapitalize="words"
+            spellcheck="false" enterkeyhint="go">
+          <button class="btn primary" type="submit">Climb</button>
+        </div>
+        <div class="timer-track"><div class="timer-fill"></div></div>
+      </div>
+    </form>
   `, "play");
 
   const input = document.getElementById("guess");
@@ -523,47 +519,43 @@ function renderReveal(fresh) {
   const last = i === n - 1;
   const total = totalOf(game);
   const before = total - r.points;
+  const band = bandFor(altOf(total));
+  const newBand = fresh && band !== bandFor(altOf(before));
 
   const rarer = q.answers
     .filter((a) => a.tier > r.tier)
     .map((a) => [Math.random(), a]).sort((x, y) => x[0] - y[0]).map(([, a]) => a) // shuffle within each tier
     .sort((a, b) => b.tier - a.tier)
     .slice(0, 3);
-  const typed = r.guess && norm(r.guess) !== norm(r.answer) ? ` <span class="typed">you typed “${esc(r.guess)}”</span>` : "";
+  const typed = r.guess && norm(r.guess) !== norm(r.answer) ? `<span class="typed">you typed “${esc(r.guess)}”</span>` : "";
+
+  Pixel.setTrail(trailTo(i + 1));
+  const ms = fresh ? Pixel.climbTo(altOf(total)) : Pixel.climbTo(altOf(total), true);
 
   show(`
-    ${topbar()}
-    <section class="panel reveal tier-${r.tier}">
-      <p class="tab">Prompt ${i + 1}/${n}</p>
-      <h2 class="prompt small">${esc(q.prompt)}</h2>
-      <div class="hit">
-        <div class="medal">${Pixel.tier(r.tier, 3)}<div class="burst"></div></div>
-        <div>
-          <p class="tier-name">${t.name}</p>
-          ${r.tier ? `<p class="your-answer">“${esc(r.answer)}”${typed}</p>` : ""}
-          <p class="blurb">${pick(t.blurb, i)}</p>
-        </div>
-        <p class="points">+${r.points}<small>m</small></p>
-      </div>
+    ${hud()}
+    <p class="recap">${esc(q.prompt)}</p>
+    <section class="reveal tier-${r.tier}">
+      <div class="medal">${Pixel.tier(r.tier, 3)}<div class="burst"></div></div>
+      <p class="tier-name">${t.name}</p>
+      ${r.tier ? `<p class="your-answer">“${esc(r.answer)}”</p>${typed}` : ""}
+      <p class="points">+${r.points} m <span>· now ${total} m up</span></p>
+      <p class="blurb">${pick(t.blurb, i)}</p>
+      ${newBand ? `<p class="new-height" style="animation-delay:${Math.round(ms * 0.6)}ms">▲ New height · ${esc(band.name)}</p>` : ""}
       ${rarer.length
         ? `<p class="finds"><b>${r.tier ? "Rarer" : "Try"}</b> ${rarer.map((a) => `<span>${Pixel.tier(a.tier, 1)}${esc(a.display)}</span>`).join("")}</p>`
         : `<p class="finds none">Nothing rarer on the list. Top of the board.</p>`}
-      <button class="btn primary block" data-action="next">${last ? "See how high you got" : "Next prompt"}</button>
     </section>
+    <div class="dock-bottom">
+      <button class="btn primary" data-action="next">${last ? "▲ See how high you got ▲" : "▲ Next prompt ▲"}</button>
+    </div>
   `, "play");
 
-  Pixel.setTrail(trailTo(i + 1));
   if (fresh) {
-    const ms = Pixel.climbTo(altOf(total));
     countUp(app.querySelector(".alt-num"), before, total, ms);
     if (!r.tier) Pixel.effect("rain");
     if (r.tier === 5) after(ms, () => Pixel.effect("sparkle"));
-    const band = bandFor(altOf(total));
-    if (band !== bandFor(altOf(before))) after(ms * 0.55, () => flashBand(band));
-  } else {
-    Pixel.climbTo(altOf(total), true);
   }
-
   if (r.tier >= 4) burst(r.tier === 5 ? 28 : 16);
   app.querySelector("[data-action=next]").focus({ preventScroll: true });
 }
@@ -573,7 +565,13 @@ function renderResults() {
   const max = maxOf();
   const total = totalOf(game);
   const band = bandFor(altOf(total));
-  const icons = game.results.map((r) => Pixel.tier(r.tier, 3)).join("");
+  const icons = game.results.map((r) => Pixel.tier(r.tier, 2)).join("");
+
+  // one column per prompt, as tall as the climb it earned
+  const chart = puzzle.questions.map((_, i) => {
+    const r = game.results[i] || { tier: 0, points: 0 };
+    return `<li class="tier-${r.tier}" style="--h:${r.points}">${Pixel.tier(r.tier, 2)}<span class="stem"></span><small>${i + 1}</small></li>`;
+  }).join("");
 
   const rows = puzzle.questions.map((q, i) => {
     const r = game.results[i] || { tier: 0, points: 0 };
@@ -597,9 +595,9 @@ function renderResults() {
   Pixel.climbTo(altOf(total), true);
   show(`
     ${banner()}
-    <section class="panel results">
-      <p class="tab">${MODE === "daily" ? "Today's climb" : "Your climb"}</p>
-      <p class="total"><span class="big">${total}</span><span class="of">m</span></p>
+    <header class="summit">
+      <p class="label">${MODE === "daily" ? "Today's climb" : "Your climb"} · No. ${puzzle.number}</p>
+      <p class="total"><b>${total}</b><span>m</span></p>
       <p class="rank">${band.emoji} ${esc(band.name)}</p>
       <p class="to-go">${total >= max ? "You built Jerusalem. Perfect day." : `${max - total} m short of Jerusalem`}</p>
       <p class="medal-row" aria-label="Your answers">${icons}</p>
@@ -607,15 +605,17 @@ function renderResults() {
         ? `<button class="btn ghost block" data-action="replay">Play again</button>`
         : `<button class="btn primary block" data-action="share">Share your climb</button>
            <p class="note">Shares your height and icons only. No spoilers.</p>`}
-    </section>
-    ${MODE === "daily" ? `<p class="countdown">Next prompts in <time>--:--:--</time></p>` : ""}
+    </header>
     <div class="sky-window" aria-hidden="true"><span>▼ Climb log</span></div>
-    <section class="panel board">
-      <p class="tab">Climb log</p>
-      <ol>${rows}</ol>
+    <section class="sheet results-sheet">
+      <h3 class="label">Climb log <span>higher = rarer</span></h3>
+      <ol class="chart" style="--n:${n}">${chart}</ol>
+      ${MODE === "daily" ? `<p class="countdown">Next prompts in <time>--:--:--</time></p>` : ""}
+      <h3 class="label">Every answer</h3>
+      <ol class="board">${rows}</ol>
+      ${statsStrip()}
+      ${footer()}
     </section>
-    ${statsStrip()}
-    ${footer()}
   `, "summit");
 
   if (MODE === "daily") startCountdown();
@@ -639,11 +639,11 @@ function renderArchive() {
   }).join("");
 
   show(`
-    <section class="panel archive">
-      <p class="tab">The archive</p>
+    <section class="sheet">
+      <h3 class="label">The archive</h3>
       ${past.length ? `<ol class="arch">${rows}</ol>` : `<p class="lede">No puzzles yet. Check back soon.</p>`}
+      ${statsStrip()}
     </section>
-    ${statsStrip()}
     ${footer()}
   `);
 }
@@ -653,8 +653,8 @@ function renderNoPuzzle(date) {
   const latest = PUZZLES.filter((p) => p.date < today).pop();
   show(`
     ${banner()}
-    <section class="panel empty">
-      <p class="tab">${fmtDate(date, true)}</p>
+    <section class="sheet">
+      <h3 class="label">${fmtDate(date, true)}</h3>
       <p class="lede">${MODE === "preview" ? `There's no puzzle for ${fmtDate(date)} in puzzles.txt yet.` : "Today's prompts haven't been posted yet."}</p>
       <p class="sub">Check back soon${latest ? ", or have a crack at an old one." : "."}</p>
       ${latest ? `<a class="btn ghost block" href="?day=${latest.date}">Play No. ${latest.number}</a>` : ""}
@@ -665,8 +665,8 @@ function renderNoPuzzle(date) {
 
 function renderError() {
   show(`
-    <section class="panel empty">
-      <p class="tab">Uh oh</p>
+    <section class="sheet">
+      <h3 class="label">Uh oh</h3>
       <p class="lede">Couldn't load today's prompts.</p>
       <p class="sub">Check your connection and refresh the page.</p>
       <button class="btn ghost block" data-action="reload">Try again</button>
@@ -683,7 +683,8 @@ function startTimer() {
   const wrap = app.querySelector(".timer");
   const update = () => {
     const left = Math.max(0, game.deadline - Date.now());
-    fill.style.width = `${(Math.ceil(left / 1000) * 1000 / total) * 100}%`;
+    fill.style.width = `${(left / total) * 100}%`;
+    wrap.style.setProperty("--t", (Math.ceil(left / 1000) * 1000) / total);
     num.textContent = Math.ceil(left / 1000);
     wrap.classList.toggle("urgent", left <= 5000);
     if (left <= 0) timeUp();
@@ -840,8 +841,21 @@ function route() {
   else renderResults();
 }
 
+// Keep the answer bar above the phone keyboard.
+function trackKeyboard() {
+  const vv = window.visualViewport;
+  if (!vv) return;
+  const update = () => {
+    const kb = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+    document.documentElement.style.setProperty("--kb", kb + "px");
+  };
+  vv.addEventListener("resize", update);
+  vv.addEventListener("scroll", update);
+}
+
 async function init() {
   Pixel.mount(document.getElementById("scene"));
+  trackKeyboard();
   let text;
   try {
     const res = await fetch(`${CONFIG.puzzleFile}?v=${Date.now()}`, { cache: "no-store" });
