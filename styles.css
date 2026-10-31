@@ -315,7 +315,7 @@ img.spr { image-rendering: pixelated; display: inline-block; vertical-align: mid
 
 /* ---------- question ---------- */
 
-.timer { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+.timer { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
 .timer-track {
   --bc: var(--night);
   flex: 1;
@@ -337,7 +337,7 @@ img.spr { image-rendering: pixelated; display: inline-block; vertical-align: mid
 .timer.urgent .timer-num { color: var(--alert); animation: blink .5s steps(2, jump-none) infinite; }
 
 .prompt {
-  margin: 4px 0 20px;
+  margin: 2px 0 16px;
   font-family: var(--body);
   font-size: clamp(28px, 8vw, 36px);
   font-weight: 600;
@@ -389,10 +389,15 @@ img.spr { image-rendering: pixelated; display: inline-block; vertical-align: mid
 
 /* ---------- reveal ---------- */
 
-.reveal { text-align: center; padding-top: 24px; padding-bottom: 16px; }
-.hit { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 6px 0 0; text-align: left; }
+/* In-game cards let the sky and the climb show through. */
+.panel.play, .panel.reveal { background: rgba(94, 17, 40, .82); }
+.panel.play { padding-top: 26px; padding-bottom: 14px; }
 
-.medal { position: relative; flex: none; width: 64px; height: 64px; }
+.reveal { text-align: center; padding: 22px 14px 12px; }
+.reveal .prompt.small { margin: 0 0 8px; font-size: 16px; }
+.hit { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; margin: 0 0 8px; text-align: left; }
+
+.medal { position: relative; flex: none; width: 48px; height: 48px; }
 .medal .spr { animation: medal-in .5s steps(5, end) both; }
 .tier-4 .medal .spr, .tier-5 .medal .spr { animation: medal-in .5s steps(5, end) both, bob 1.2s .6s steps(2, jump-none) infinite; }
 
@@ -413,40 +418,36 @@ img.spr { image-rendering: pixelated; display: inline-block; vertical-align: mid
 .tier-name {
   margin: 0;
   font-family: var(--display);
-  font-size: 46px;
+  font-size: 34px;
   line-height: .85;
   text-transform: uppercase;
   color: var(--tc, var(--ink));
-  text-shadow: 3px 3px 0 var(--night);
+  text-shadow: 2px 2px 0 var(--night);
 }
 .tier-0 { --tc: var(--ink-3); }
 .tier-1 { --tc: #f2a3b6; }
 .tier-2 { --tc: #ffe9a0; }
 .tier-3 { --tc: #f4f0e6; }
 .tier-4, .tier-5 { --tc: var(--gold-hi); }
-.points { margin: 4px 0 0; font-family: var(--label); font-size: 20px; color: var(--gold); }
-.your-answer { margin: 10px 0 0; font-size: 24px; font-weight: 600; line-height: 1.15; }
-.typed { display: block; margin-top: 2px; font-size: 14px; font-weight: 400; color: var(--ink-3); }
-.blurb { margin: 4px 0 12px; font-size: 16px; color: var(--ink-2); }
+.hit .points { margin: 0; font-family: var(--display); font-size: 42px; line-height: 1; color: var(--gold); text-shadow: 2px 2px 0 var(--night); }
+.hit .points small { font-size: .5em; margin-left: 1px; }
+.your-answer { margin: 3px 0 0; font-size: 18px; font-weight: 600; line-height: 1.15; }
+.typed { font-size: 12px; font-weight: 400; color: var(--ink-3); }
+.blurb { margin: 2px 0 0; font-size: 13px; line-height: 1.25; color: var(--ink-3); }
 
 .finds {
-  --bc: var(--night);
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 2px 12px;
-  margin: 0 var(--p) 14px;
-  padding: 6px 10px 7px;
-  font-size: 15px;
-  background: var(--maroon-dk);
-  box-shadow:
-    0 calc(var(--p) * -1) 0 0 var(--bc), 0 var(--p) 0 0 var(--bc),
-    calc(var(--p) * -1) 0 0 0 var(--bc), var(--p) 0 0 0 var(--bc);
+  gap: 0 10px;
+  margin: 0 0 8px;
+  font-size: 14px;
 }
-.finds b { font-family: var(--label); font-size: 12px; text-transform: uppercase; color: var(--gold); }
+.finds b { font-family: var(--label); font-size: 11px; text-transform: uppercase; color: var(--gold); }
 .finds span { display: inline-flex; align-items: center; gap: 3px; }
 .finds.none { color: var(--gold-hi); }
+.reveal .btn { min-height: 44px; padding: 8px 16px 11px; }
 
 /* ---------- results ---------- */
 
@@ -563,7 +564,6 @@ details[open] summary::before { content: "- "; }
 }
 .banner strong { margin-right: 4px; font-family: var(--label); font-size: 12px; text-transform: uppercase; color: var(--night); background: var(--gold); padding: 1px 6px; }
 .warnings { margin: 8px 0 0; padding-left: 18px; text-align: left; color: var(--alert); font-size: 14px; }
-.banner .ok { margin: 4px 0 0; font-size: 14px; color: var(--gold); }
 
 .toast {
   --bc: var(--night);

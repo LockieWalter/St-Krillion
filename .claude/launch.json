@@ -1,0 +1,10 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "pauls-gold",
+      "url": "http://localhost:8642",
+      "port": 8642
+    }
+  ]
+}

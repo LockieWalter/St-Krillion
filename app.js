@@ -383,12 +383,13 @@ function stats() {
 
 /* ----------------------------- pieces ----------------------------- */
 
+// Notes for the title and results screens. Preview only gets one when puzzles.txt has problems.
 function banner() {
-  if (MODE === "preview") {
+  if (MODE === "preview" && WARNINGS.length) {
     return `
       <div class="banner">
-        <strong>Preview</strong> nothing is saved. <a href="./">Exit</a>
-        ${WARNINGS.length ? `<ul class="warnings">${WARNINGS.map((w) => `<li>${esc(w)}</li>`).join("")}</ul>` : `<p class="ok">puzzles.txt looks good.</p>`}
+        <strong>Preview</strong> puzzles.txt has some lines to fix:
+        <ul class="warnings">${WARNINGS.map((w) => `<li>${esc(w)}</li>`).join("")}</ul>
       </div>`;
   }
   if (MODE === "archive") {
@@ -398,7 +399,7 @@ function banner() {
 }
 
 function edition() {
-  return `No. ${puzzle.number} · ${fmtDate(puzzle.date, true)}`;
+  return `No. ${puzzle.number} · ${fmtDate(puzzle.date, true)}${MODE === "preview" ? " · Preview" : ""}`;
 }
 
 function topbar() {
@@ -412,7 +413,6 @@ function topbar() {
     return `<li class="pip${i === game.index ? " now" : ""}"><span></span></li>`;
   }).join("");
   return `
-    ${banner()}
     <header class="topbar">
       <a class="crest" href="./" aria-label="${esc(CONFIG.name)}">${Pixel.sprite("cross", 2)}</a>
       <ol class="pips" aria-label="Prompt ${game.index + 1} of ${n}">${pips}</ol>
@@ -529,7 +529,7 @@ function renderReveal(fresh) {
     .map((a) => [Math.random(), a]).sort((x, y) => x[0] - y[0]).map(([, a]) => a) // shuffle within each tier
     .sort((a, b) => b.tier - a.tier)
     .slice(0, 3);
-  const typed = r.guess && norm(r.guess) !== norm(r.answer) ? `<span class="typed">you typed “${esc(r.guess)}”</span>` : "";
+  const typed = r.guess && norm(r.guess) !== norm(r.answer) ? ` <span class="typed">you typed “${esc(r.guess)}”</span>` : "";
 
   show(`
     ${topbar()}
@@ -537,14 +537,14 @@ function renderReveal(fresh) {
       <p class="tab">Prompt ${i + 1}/${n}</p>
       <h2 class="prompt small">${esc(q.prompt)}</h2>
       <div class="hit">
-        <div class="medal">${Pixel.tier(r.tier, 4)}<div class="burst"></div></div>
+        <div class="medal">${Pixel.tier(r.tier, 3)}<div class="burst"></div></div>
         <div>
           <p class="tier-name">${t.name}</p>
-          <p class="points">+${r.points} m</p>
+          ${r.tier ? `<p class="your-answer">“${esc(r.answer)}”${typed}</p>` : ""}
+          <p class="blurb">${pick(t.blurb, i)}</p>
         </div>
+        <p class="points">+${r.points}<small>m</small></p>
       </div>
-      ${r.tier ? `<p class="your-answer">“${esc(r.answer)}” ${typed}</p>` : ""}
-      <p class="blurb">${pick(t.blurb, i)}</p>
       ${rarer.length
         ? `<p class="finds"><b>${r.tier ? "Rarer" : "Try"}</b> ${rarer.map((a) => `<span>${Pixel.tier(a.tier, 1)}${esc(a.display)}</span>`).join("")}</p>`
         : `<p class="finds none">Nothing rarer on the list. Top of the board.</p>`}
