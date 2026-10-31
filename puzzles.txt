@@ -51,7 +51,7 @@ piano:   Aeronautical Engineering / Aero, Environmental Engineering, Applied Sci
 chalice: Veterinary Medicine / Vet Med, Veterinary Biology / Vet Biology, Nutrition & Diet / Nutrition and Dietetics / Nutrition, Human Resources / HR, Innovation & Entrepreneurship, Financial Maths & Statistics / Financial Maths, Environmental Science / Environmental Studies, Geography, Music
 swords:  Biochemistry / Molecular Biology, Genetics & Genomics / Genetics, Immunology & Pathology / Immunology, Agricultural Science / Ag Sci, International Studies, Animal & Veterinary Bioscience
 
-Q: What's a standard meal or dessert you'd expect in the dining hall?
+Q: What's a standard meal you'd expect in the dining hall?
 wine:    Chicken Schnitzel / Schnitzel / Schnitty, Pasta Carbonara / Carbonara, Spaghetti Bolognese / Spag Bol / Bolognese, Roast Chicken, Curry, Pizza, Lasagne / Lasagna, Steak, Beef Burger / Burger, Chicken Parmigiana / Chicken Parma / Chicken Parmi / Parma / Parmi, Fish and Chips
 rings:   Chicken Burger, Nachos, Butter Chicken, Chicken Curry, Tacos, Fried Rice, Roast Beef, Sausages and Mash / Bangers and Mash, Chicken Stir-fry / Stir Fry
 piano:   Pork, Pulled Pork, Meat Pies / Meat Pie, Shepherd's Pie, Thai Green Curry / Green Curry, Teriyaki Chicken, Burritos
