@@ -171,14 +171,14 @@ function addAnswers(q, tier, list, where, warnings) {
   for (const entry of list.split(",")) {
     const aliases = entry.split("/").map((s) => s.trim()).filter(Boolean);
     if (!aliases.length) continue;
-    const keys = new Set();
-    for (const a of aliases) for (const k of variants(a, q.prompt)) keys.add(k);
+    const forms = aliases.flatMap((a) => wordForms(a, q.prompt));
+    const keys = new Set(forms.map((w) => w.join("")));
     const clash = q.answers.find((a) => [...keys].some((k) => [...a.keys].some((e) => sameKey(k, e))));
     if (clash) {
       warnings.push(`${where}: "${aliases[0]}" is already listed as ${TIERS[clash.tier].name} for "${q.prompt}".`);
       continue;
     }
-    q.answers.push({ display: aliases[0], tier, keys });
+    q.answers.push({ display: aliases[0], tier, keys, forms });
   }
 }
 
@@ -187,25 +187,28 @@ function addAnswers(q, tier, list, where, warnings) {
 function norm(s) {
   return s.toLowerCase()
     .normalize("NFD").replace(/[̀-ͯ]/g, "")
-    .replace(/&/g, " and ")
+    .replace(/[&+]/g, " and ")
     .replace(/['’`]/g, "")
     .replace(/[^a-z0-9]+/g, " ")
     .replace(/\bsaint\b/g, "st")
     .replace(/\bmount\b/g, "mt")
+    .replace(/\bn\b/g, "and")
+    .replace(/\bintl\b/g, "international")
     .trim()
-    .replace(/^(the|a|an) /, "");
+    .replace(/^(the|a|an) /, "")
+    .replace(/^(bachelors?|masters?|doctor|degree) (of|in) /, "");
 }
 
 const PROMPT_SKIP = new Set(["name", "the", "and", "that", "with", "from", "you", "your", "something", "thing", "type", "kind", "one", "who", "can"]);
 
-// "Bondi Beach" for "Name a Sydney beach" should match "Bondi": also try the
-// answer without a trailing word that's already in the prompt.
-function variants(text, prompt) {
+// "Bondi Beach" for "Name a Sydney beach" should match "Bondi": as well as the
+// words as typed, also try them without a trailing word that's already in the prompt.
+function wordForms(text, prompt) {
   const words = norm(text).split(" ").filter(Boolean);
   if (!words.length) return [];
-  const out = [words.join("")];
+  const out = [words];
   const promptWords = new Set(norm(prompt).split(" ").filter((w) => w.length > 2 && !PROMPT_SKIP.has(w)));
-  if (words.length > 1 && promptWords.has(words[words.length - 1])) out.push(words.slice(0, -1).join(""));
+  if (words.length > 1 && promptWords.has(words[words.length - 1])) out.push(words.slice(0, -1));
   return out;
 }
 
@@ -214,47 +217,115 @@ function sameKey(a, b) {
   return a === b || a === b + "s" || b === a + "s" || a === b + "es" || b === a + "es";
 }
 
-function levenshtein(a, b) {
-  const prev = Array.from({ length: b.length + 1 }, (_, j) => j);
+// Edits to turn a into b, where swapping two neighbouring letters counts as one.
+function editDistance(a, b) {
+  const d = Array.from({ length: a.length + 1 }, (_, i) => [i]);
+  for (let j = 1; j <= b.length; j++) d[0][j] = j;
   for (let i = 1; i <= a.length; i++) {
-    let diag = prev[0];
-    prev[0] = i;
     for (let j = 1; j <= b.length; j++) {
-      const tmp = prev[j];
-      prev[j] = Math.min(prev[j] + 1, prev[j - 1] + 1, diag + (a[i - 1] === b[j - 1] ? 0 : 1));
-      diag = tmp;
+      d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+      if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
     }
   }
-  return prev[b.length];
+  return d[a.length][b.length];
+}
+
+// Typos forgiven for something this many letters long.
+function slack(n) {
+  return n >= 12 ? 3 : n >= 8 ? 2 : n >= 4 ? 1 : 0;
+}
+
+// Does one typed word fit one word of an answer? Returns { cost, short } or null:
+// cost 0 for the same word, 1 for a shortening ("vet", "mech", "maths") or a typo,
+// a bit more for a misspelt shortening. short = it's an abbreviation.
+function wordMatch(g, a) {
+  if (sameKey(g, a)) return { cost: 0, short: false };
+  const stem = g.length > 4 && g.endsWith("s") ? g.slice(0, -1) : g;
+  if (g.length >= 3 && g.length < a.length && a.startsWith(g)) return { cost: 1, short: true };
+  if (stem !== g && stem.length < a.length && a.startsWith(stem)) return { cost: 1, short: true };
+  if (a.length >= 5 && Math.abs(g.length - a.length) <= slack(a.length) && editDistance(g, a) <= slack(a.length)) return { cost: 1, short: false };
+  if (g.length >= 5 && g.length < a.length && editDistance(g, a.slice(0, g.length)) <= 1) return { cost: 1.5, short: true };
+  return null;
+}
+
+const FILLER = new Set(["and", "of", "in", "the", "a", "to"]);
+// Words a player can leave off the end: "Mechanical" for "Mechanical Engineering",
+// "Dining" for "Dining Hall", "Johns" for "Johns Formal".
+const GENERIC = new Set([
+  "science", "sciences", "sci", "studies", "engineering", "eng",
+  "hall", "room", "house", "day", "dinner", "week", "night", "formal", "party", "theme",
+]);
+
+// Fit typed words to an answer's words, in order, from the first. Returns a cost
+// (0 = perfect, +1 per shortened, misspelt or missing word), or null if it doesn't fit.
+// The guess may stop early after an abbreviation ("vet" for "Veterinary Medicine")
+// or when all that's left is generic ("Data" for "Data Science"); open = stop anywhere.
+function phraseCost(gw, aw, open = false) {
+  let i = 0;
+  let cost = 0;
+  let lastShort = false;
+  for (let j = 0; j < aw.length; j++) {
+    if (i === gw.length) {
+      const rest = aw.slice(j).filter((w) => !FILLER.has(w));
+      return open || lastShort || rest.every((w) => GENERIC.has(w)) ? cost + rest.length : null;
+    }
+    const m = wordMatch(gw[i], aw[j]);
+    if (m) {
+      cost += m.cost;
+      lastShort = m.short;
+      i++;
+    } else if (!FILLER.has(aw[j])) return null;
+  }
+  return i === gw.length ? cost : null;
 }
 
 function findAnswer(q, guess) {
-  const gs = variants(guess, q.prompt);
-  if (!gs.length) return null;
+  const gForms = wordForms(guess, q.prompt);
+  if (!gForms.length) return null;
+  const gKeys = gForms.map((w) => w.join(""));
 
   for (const a of q.answers) {
     for (const k of a.keys) {
-      for (const g of gs) {
+      for (const g of gKeys) {
         if (sameKey(g, k)) return a;
       }
     }
   }
 
-  // Forgive small typos on longer answers; on a tie, take the more common answer.
+  // Otherwise take the closest fit: a typo in the whole answer, or a word-by-word
+  // match with shortenings. On a tie the more common answer wins, so a vague
+  // shortening never scores better than typing the answer out.
   let best = null;
-  let bestD = Infinity;
+  let bestCost = Infinity;
+  const consider = (a, cost) => {
+    if (cost < bestCost || (cost === bestCost && a.tier < best.tier)) {
+      best = a;
+      bestCost = cost;
+    }
+  };
   for (const a of q.answers) {
     for (const k of a.keys) {
-      const allow = k.length >= 8 ? 2 : k.length >= 5 ? 1 : 0;
-      for (const g of gs) {
-        if (!allow || Math.abs(k.length - g.length) > allow) continue;
-        const d = levenshtein(g, k);
-        if (d <= allow && (d < bestD || (d === bestD && a.tier < best.tier))) {
-          best = a;
-          bestD = d;
+      for (const g of gKeys) {
+        const allow = slack(k.length);
+        if (allow && Math.abs(k.length - g.length) <= allow) {
+          const d = editDistance(g, k);
+          if (d <= allow) consider(a, d);
         }
       }
     }
+    for (const aw of a.forms) {
+      for (const gw of gForms) {
+        const c = phraseCost(gw, aw);
+        if (c !== null) consider(a, c);
+      }
+    }
+  }
+
+  // Last resort: the start of exactly one answer, like "Surreal" for "Surreal Sounds".
+  // "Fralley" or "Chicken" start several, so they still don't count.
+  if (!best && gKeys[0].length >= 4) {
+    const hits = q.answers.filter((a) => a.forms.some((aw) => gForms.some((gw) => phraseCost(gw, aw, true) !== null)));
+    if (hits.length === 1) best = hits[0];
   }
   return best;
 }

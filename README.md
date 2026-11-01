@@ -38,7 +38,7 @@ All the prompts live in [`puzzles.txt`](puzzles.txt). To add a day:
 
    - The tier words run from most to least common: **wine, rings, piano, chalice, swords**. `1:` to `5:` work too, and so do the old `fools/bronze/silver/gold/lode` words.
    - Separate answers with commas. Put alternate spellings after a slash (`Freshwater / Freshie`).
-   - Capitals, punctuation, "the", plurals, accents and small typos are forgiven automatically.
+   - Capitals, punctuation, "the", plurals, accents, typos and shortenings are forgiven automatically. "Vet" counts as Veterinary Medicine, "Mech Eng" as Mechanical Engineering, "Dining" as Dining Hall. A guess that could be several answers gets the most common one. Nicknames that aren't shortenings (Sals, Jim's, ABC) still need listing.
    - Any answer that isn't listed scores 0, so list generously.
    - You can use any number of prompts per day. Five works well. A perfect day always reaches Jerusalem, however many prompts there are.
 3. Commit. The site updates within a minute or so.

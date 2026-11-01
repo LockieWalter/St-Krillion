@@ -16,8 +16,11 @@
 #         piano: Freshwater / Freshie, Shelly Beach / Shelly
 #    4. Anything that isn't listed scores nothing, so list generously.
 #
-#  Capitals, punctuation, "the", plurals and small typos are forgiven
-#  automatically. You don't need to list those variations.
+#  Capitals, punctuation, "the", plurals, typos and shortenings are
+#  forgiven automatically: "vet" counts as Veterinary Medicine, "mech
+#  eng" as Mechanical Engineering, "dining" as Dining Hall. A guess that
+#  could be several answers gets the most common one. You don't need to
+#  list those variations, but do add nicknames (Sals, Jim's, ABC).
 #
 #  CHECK A DAY BEFORE YOU POST THE LINK
 #    Open  <your site>/?preview=2026-10-31  to play that day without
@@ -46,9 +49,9 @@ swords:  Golf Pros and Tennis Bros, Legendary Lineups
 
 Q: Name a Pauline degree
 wine:    Arts, Laws / Law, Commerce, Engineering, Science, Medicine / Med, Economics / Eco, Finance, Accounting, Psychology / Psych, Computer Science / Comp Sci, Mechanical Engineering / Mech Eng, Civil Engineering / Civil, Marketing, Nursing, Education, Advanced Studies, Business Analytics
-rings:   Politics Philosophy & Economics / PPE, Psychological Science, Mechatronic Engineering / Mechatronics, Software Engineering, Electrical Engineering, Biomedical Engineering, Chemical Engineering, Data Science, Mathematics / Maths, Media & Communications / Media and Comms / Media, Medical Science / Med Sci, Management, Biology, Physics
+rings:   Politics Philosophy & Economics / PPE, Psychological Science, Mechatronic Engineering / Mechatronics, Software Engineering, Electrical Engineering, Biomedical Engineering, Chemical Engineering, Data Science, Mathematics / Maths, Media & Communications / Media and Comms / Media / Communications / Comms, Medical Science / Med Sci, Management, Biology, Physics
 piano:   Aeronautical Engineering / Aero, Environmental Engineering, Applied Science, Chemistry, Banking, Business Law, Physiology, Neuroscience, International Business / Global Business, Advanced Computing, Design in Architecture / Architecture
-chalice: Veterinary Medicine / Vet Med, Veterinary Biology / Vet Biology, Nutrition & Diet / Nutrition and Dietetics / Nutrition, Human Resources / HR, Innovation & Entrepreneurship, Financial Maths & Statistics / Financial Maths, Environmental Science / Environmental Studies, Geography, Music
+chalice: Veterinary Medicine / Vet Med / Veterinary Science / Vet Science, Veterinary Biology / Vet Biology, Nutrition & Diet / Nutrition and Dietetics / Nutrition, Human Resources / HR, Innovation & Entrepreneurship, Financial Maths & Statistics / Financial Maths, Environmental Science / Environmental Studies, Geography, Music
 swords:  Biochemistry / Molecular Biology, Genetics & Genomics / Genetics, Immunology & Pathology / Immunology, Agricultural Science / Ag Sci, International Studies, Animal & Veterinary Bioscience
 
 Q: What's a standard meal you'd expect in the dining hall?
