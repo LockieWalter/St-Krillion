@@ -1,6 +1,6 @@
 # Building Jerusillion
 
-The daily St Paul's College quiz. Each day brings a handful of prompts like *"Name a cocktail"*, with 20 seconds for each. Any right answer scores, but obvious answers barely count. The rarer your answer, the higher your maroon and gold balloon climbs:
+The daily St Paul's College quiz. Each day brings a handful of prompts like *"Name a cocktail"*, with 25 seconds for each. Any right answer scores, but obvious answers barely count. The rarer your answer, the higher your maroon and gold balloon climbs:
 
 | Tier | Climb |
 | --- | --- |
@@ -80,4 +80,4 @@ To change the name, the timer length or the time zone, edit `CONFIG` at the top 
 
 - Scores are kept in each player's browser, so there's no sign-up, but there's also no shared leaderboard. The group is the leaderboard: the **Share your climb** button copies a spoiler-free score with that day's link, ready to paste as a comment.
 - Tapping a link inside the Facebook app opens Facebook's own browser, which keeps its own scores. Opening the same link in Safari or Chrome counts as a different device.
-- `puzzles.txt` is public. Anyone determined enough can read the answers. The 20-second clock keeps most people honest.
+- `puzzles.txt` is public. Anyone determined enough can read the answers. The 25-second clock keeps most people honest.

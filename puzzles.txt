@@ -45,7 +45,7 @@ swords:  Scattic, Fire Warden Jim's / Jim's / Firewarden / Fire Warden
 Q: Name a Sals theme
 wine:    Halloween, Pyjama Party / Pajama Party / PJ Party, Black Tie, Back to School, Anything But Clothes / ABC, Y2K, Full Moon
 rings:   Euro Summer, Apres Ski, Jersey Night, Eshays, White Lies, When I Grow Up
-piano:   Wacky Wednesday, Dynamic Duos, Bee Theme / Bees, Corridor Wars
+piano:   Wacky Wednesday, Dynamic Duos, Bee Theme / Bees, Corridor Wars, Running with the Bulls / Running of the Bulls
 chalice: Dress as Your Type, Esps and Emos, WTF Are You Wearing
 swords:  Golf Pros and Tennis Bros, Legendary Lineups
 
@@ -60,7 +60,7 @@ Q: What's a standard meal you'd expect in the dining hall?
 wine:    Chicken Schnitzel / Schnitzel / Schnitty, Pasta Carbonara / Carbonara, Spaghetti Bolognese / Spag Bol / Bolognese, Roast Chicken, Curry, Pizza, Lasagne / Lasagna, Steak, Beef Burger / Burger, Chicken Parmigiana / Chicken Parma / Chicken Parmi / Parma / Parmi, Fish and Chips
 rings:   Chicken Burger, Nachos, Butter Chicken, Chicken Curry, Tacos, Fried Rice, Roast Beef, Sausages and Mash / Bangers and Mash, Chicken Stir-fry / Stir Fry
 piano:   Pork, Pulled Pork, Meat Pies / Meat Pie, Shepherd's Pie, Thai Green Curry / Green Curry, Teriyaki Chicken, Burritos
-chalice: Lemon Myrtle Chicken, Beef Stir-fry, BBQ Chicken, Pad Thai
+chalice: Lemon Myrtle Chicken, Beef Stir-fry, BBQ Chicken, Pad Thai, Beef Goulash / Goulash
 swords:  Whatever they give the Vegans / Vegans / Vegan Meal, Turkey, Beef Wellington
 
 Q: Name a type of college event (like a Wine Cellar)
