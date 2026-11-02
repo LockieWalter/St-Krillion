@@ -68,7 +68,6 @@ let MODE = "daily"; // daily | archive | preview
 let puzzle = null;
 let game = null;
 let timerId = null;
-let countdownId = null;
 
 /* ---------------------------- storage ----------------------------- */
 
@@ -78,6 +77,11 @@ const store = {
   },
   set(key, value) {
     try { localStorage.setItem(PREFIX + key, JSON.stringify(value)); } catch { /* private mode */ }
+  },
+  clear() {
+    try {
+      Object.keys(localStorage).filter((k) => k.startsWith(PREFIX)).forEach((k) => localStorage.removeItem(k));
+    } catch { /* private mode */ }
   },
 };
 
@@ -100,17 +104,6 @@ function clockParts(d = new Date()) {
 function todayKey() {
   const o = clockParts();
   return `${o.year}-${o.month}-${o.day}`;
-}
-
-function secondsToMidnight() {
-  const o = clockParts();
-  return 86400 - (+o.hour * 3600 + +o.minute * 60 + +o.second);
-}
-
-function addDays(key, n) {
-  const d = new Date(key + "T12:00:00Z");
-  d.setUTCDate(d.getUTCDate() + n);
-  return d.toISOString().slice(0, 10);
 }
 
 function fmtDate(key, short = false) {
@@ -347,7 +340,6 @@ let later = []; // timeouts that belong to the current screen
 // view: "ground" (parked on the lawn, with the title), "play" or "summit" (the results).
 function show(html, view = "ground", ed = "") {
   stopTimer();
-  clearInterval(countdownId);
   later.forEach(clearTimeout);
   later = [];
   document.body.dataset.view = view;
@@ -700,15 +692,12 @@ function renderResults() {
     <section class="sheet results-sheet">
       <h3 class="label">Climb log <span>higher = rarer</span></h3>
       <ol class="chart" style="--n:${n}">${chart}</ol>
-      ${MODE === "daily" ? `<p class="countdown">Next prompts in <time>--:--:--</time></p>` : ""}
       <h3 class="label">Every answer</h3>
       <ol class="board">${rows}</ol>
       ${statsStrip()}
       ${footer()}
     </section>
   `, "summit");
-
-  if (MODE === "daily") startCountdown();
 }
 
 function renderArchive() {
@@ -753,20 +742,18 @@ function renderNoPuzzle(date) {
   `);
 }
 
-// A day link opened before that day: say when it opens, and count down if it's tomorrow.
+// A day link opened before that day: say when it opens.
 function renderLocked(number, date) {
   const today = PUZZLES.find((p) => p.date === todayKey());
-  const soon = date === addDays(todayKey(), 1);
   show(`
     <section class="sheet">
       <h3 class="label">No. ${number}</h3>
       <p class="lede">${date ? `Opens ${fmtDate(date)}.` : "These prompts aren't up yet."}</p>
-      ${soon ? `<p class="countdown">Opens in <time>--:--:--</time></p>` : `<p class="sub">Check back soon.</p>`}
+      <p class="sub">Check back ${date ? "then" : "soon"}.</p>
       ${today ? `<a class="btn ghost block" href="./">Play today's, No. ${today.number}</a>` : ""}
     </section>
     ${footer()}
   `);
-  if (soon) startCountdown();
 }
 
 function renderError() {
@@ -802,20 +789,6 @@ function startTimer() {
 function stopTimer() {
   clearInterval(timerId);
   timerId = null;
-}
-
-function startCountdown() {
-  const el = app.querySelector(".countdown time");
-  const update = () => {
-    const s = secondsToMidnight();
-    if (s <= 1) return location.reload();
-    const hh = String(Math.floor(s / 3600)).padStart(2, "0");
-    const mm = String(Math.floor((s % 3600) / 60)).padStart(2, "0");
-    const ss = String(s % 60).padStart(2, "0");
-    el.textContent = `${hh}:${mm}:${ss}`;
-  };
-  update();
-  countdownId = setInterval(update, 1000);
 }
 
 /* ----------------------------- actions ---------------------------- */
@@ -987,6 +960,14 @@ async function init() {
   const params = new URLSearchParams(location.search);
   const today = todayKey();
   const isDate = (s) => /^\d{4}-\d{2}-\d{2}$/.test(s || "");
+  // …/?reset forgets every game played on this device, so you can test a day for real.
+  if (params.has("reset")) {
+    store.clear();
+    params.delete("reset");
+    const rest = params.toString();
+    history.replaceState(null, "", location.pathname + (rest ? "?" + rest : ""));
+    toast("Cleared. Fresh start on this device");
+  }
   if (params.has("archive")) return renderArchive();
 
   let date = today;

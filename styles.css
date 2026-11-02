@@ -421,8 +421,6 @@ p { margin: 0; }
 .chart .stem { width: 2px; height: calc(var(--h) * 1.05px); margin-top: 2px; background: linear-gradient(var(--tc), transparent); }
 .chart small { margin: 4px 0 2px; font-size: 16px; color: var(--ink-3); }
 
-.countdown { margin-top: 18px; font-size: 16px; letter-spacing: 3px; text-align: center; text-transform: uppercase; color: var(--ink-3); }
-.countdown time { display: block; font-size: 46px; letter-spacing: 2px; line-height: 1; color: var(--gold-hi); }
 
 .board { margin: 6px 0 0; padding: 0; list-style: none; }
 .row { display: grid; grid-template-columns: 24px 1fr auto; gap: 2px 10px; align-items: start; padding: 10px 0; border-top: 2px dashed var(--rule); }

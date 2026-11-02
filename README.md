@@ -49,7 +49,7 @@ Each day's link always opens that day's puzzle:
 
 - **On its day**, it's the real thing: one go each, and it counts toward streaks.
 - **After its day**, it still plays, as an archive game, so anyone who scrolls past the post late can have a go.
-- **Before its day**, it just says when it opens (with a countdown the night before), so posting early doesn't give anything away.
+- **Before its day**, it just says when it opens, so posting early doesn't give anything away.
 
 The plain address, `…/St-Krillion/`, always opens whatever is on today. You can write days in advance; each one goes live at midnight Sydney time on its date. Puzzles are numbered in date order, so add new days after the old ones rather than before, or the numbers in old links will shift.
 
@@ -58,6 +58,7 @@ The plain address, `…/St-Krillion/`, always opens whatever is on today. You ca
 - `/` is today's puzzle.
 - `/?day=N` is puzzle No. N. This is the link to post each day.
 - `/?preview` is today's puzzle in preview mode, which saves nothing.
+- `/?reset` forgets every game played on the device that opens it, so you can play a day for real again while testing. Facebook's in-app browser and Safari or Chrome keep separate games, so reset in whichever one you test in.
 - `/?preview=YYYY-MM-DD` (or `/?preview=N`) previews any day, including future ones.
 - `/?archive` lists past puzzles. Anyone who missed a day can play it there, but it won't count toward their streak.
 
