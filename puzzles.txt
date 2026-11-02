@@ -22,16 +22,18 @@
 #  could be several answers gets the most common one. You don't need to
 #  list those variations, but do add nicknames (Sals, Jim's, ABC).
 #
-#  CHECK A DAY BEFORE YOU POST THE LINK
-#    Open  <your site>/?preview=2026-10-31  to play that day without
-#    saving anything. The page also lists any lines it couldn't read.
+#  CHECK A DAY, THEN POST ITS LINK
+#    Open  <your site>/?preview=2026-11-02  to play that day without
+#    saving anything. The page lists any lines it couldn't read, and
+#    has a Copy link button for that day's own link (…/?day=1 for
+#    No. 1, …/?day=2 for No. 2). Post that in the group on the day.
 #
 #  Lines starting with # are ignored. The newest day can go anywhere
 #  in this file; order doesn't matter.
 # ==================================================================
 
 
-2026-10-31
+2026-11-02
 
 Q: Where might you find cutlery?
 wine:    Dining Hall, Buttery, Kitchenette / Kitchen, Salisbury / Sals, Library, Tut Room, Hallway
@@ -72,7 +74,7 @@ swords:  Salisbury Circus, City vs Country Tip, Surreal Sounds
 # ------------------------------------------------------------------
 # Copy this block for the next day:
 #
-# 2026-10-31
+# 2026-11-03
 #
 # Q: Name a ...
 # wine:

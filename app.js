@@ -107,6 +107,12 @@ function secondsToMidnight() {
   return 86400 - (+o.hour * 3600 + +o.minute * 60 + +o.second);
 }
 
+function addDays(key, n) {
+  const d = new Date(key + "T12:00:00Z");
+  d.setUTCDate(d.getUTCDate() + n);
+  return d.toISOString().slice(0, 10);
+}
+
 function fmtDate(key, short = false) {
   return new Date(key + "T12:00:00Z").toLocaleDateString("en-AU", short
     ? { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" }
@@ -406,8 +412,9 @@ function countUp(el, from, to, ms) {
   requestAnimationFrame(step);
 }
 
-function shareUrl() {
-  return location.origin + location.pathname;
+// Each puzzle has its own link to post: …/?day=3 always opens No. 3.
+function dayLink(p) {
+  return `${location.origin}${location.pathname}?day=${p.number}`;
 }
 
 function pick(list, i) {
@@ -456,6 +463,17 @@ function banner() {
     return `<div class="banner"><strong>Archive</strong> doesn't count toward your streak. <a href="./">Today's puzzle</a></div>`;
   }
   return "";
+}
+
+// Preview only: this day's link, ready to paste into the group.
+function postLink() {
+  if (MODE !== "preview") return "";
+  return `
+    <div class="post-link">
+      <p class="label">Post on ${fmtDate(puzzle.date, true)}</p>
+      <code>${esc(dayLink(puzzle).replace(/^https?:\/\//, ""))}</code>
+      <button class="btn ghost block" data-action="copy-link">Copy link</button>
+    </div>`;
 }
 
 function edition() {
@@ -539,6 +557,7 @@ function renderIntro() {
           <ol class="ladder" aria-label="Metres by rarity">${ladder}</ol>
         </div>
       </details>
+      ${postLink()}
     </section>
     ${footer()}
   `, "ground", edition());
@@ -673,7 +692,7 @@ function renderResults() {
       <p class="to-go">${total >= max ? "You built Jerusalem. Perfect day." : `${max - total} m short of Jerusalem`}</p>
       <p class="medal-row" aria-label="Your answers">${icons}</p>
       ${MODE === "preview"
-        ? `<button class="btn ghost block" data-action="replay">Play again</button>`
+        ? `${postLink()}<button class="btn ghost block" data-action="replay">Play again</button>`
         : `<button class="btn primary block" data-action="share">Share your climb</button>
            <p class="note">Shares your height and icons only. No spoilers.</p>`}
     </header>
@@ -697,7 +716,7 @@ function renderArchive() {
   const past = PUZZLES.filter((p) => p.date <= today).reverse();
   const rows = past.map((p) => {
     const g = store.get("game:" + p.date);
-    const href = p.date === today ? "./" : `?day=${p.date}`;
+    const href = p.date === today ? "./" : `?day=${p.number}`;
     const status = g && g.phase === "done"
       ? `<span class="arch-score">${totalOf(g)}<small>m</small></span>`
       : g && g.phase !== "intro" ? `<span class="arch-play">Resume</span>` : `<span class="arch-play">Play</span>`;
@@ -728,10 +747,26 @@ function renderNoPuzzle(date) {
       <h3 class="label">${fmtDate(date, true)}</h3>
       <p class="lede">${MODE === "preview" ? `There's no puzzle for ${fmtDate(date)} in puzzles.txt yet.` : "Today's prompts haven't been posted yet."}</p>
       <p class="sub">Check back soon${latest ? ", or have a crack at an old one." : "."}</p>
-      ${latest ? `<a class="btn ghost block" href="?day=${latest.date}">Play No. ${latest.number}</a>` : ""}
+      ${latest ? `<a class="btn ghost block" href="?day=${latest.number}">Play No. ${latest.number}</a>` : ""}
     </section>
     ${footer()}
   `);
+}
+
+// A day link opened before that day: say when it opens, and count down if it's tomorrow.
+function renderLocked(number, date) {
+  const today = PUZZLES.find((p) => p.date === todayKey());
+  const soon = date === addDays(todayKey(), 1);
+  show(`
+    <section class="sheet">
+      <h3 class="label">No. ${number}</h3>
+      <p class="lede">${date ? `Opens ${fmtDate(date)}.` : "These prompts aren't up yet."}</p>
+      ${soon ? `<p class="countdown">Opens in <time>--:--:--</time></p>` : `<p class="sub">Check back soon.</p>`}
+      ${today ? `<a class="btn ghost block" href="./">Play today's, No. ${today.number}</a>` : ""}
+    </section>
+    ${footer()}
+  `);
+  if (soon) startCountdown();
 }
 
 function renderError() {
@@ -850,6 +885,16 @@ function next() {
   renderResults();
 }
 
+async function copyLink() {
+  const url = dayLink(puzzle);
+  try {
+    await navigator.clipboard.writeText(url);
+    toast("Link copied. Paste it in the group");
+  } catch {
+    window.prompt("Copy this link:", url);
+  }
+}
+
 async function share() {
   const s = stats();
   const total = totalOf(game);
@@ -860,7 +905,7 @@ async function share() {
     game.results.map((r) => TIERS[r.tier].emoji).join(""),
   ];
   if (MODE === "daily" && s.streak >= 2) lines.push(`🔥 ${s.streak}-day streak`);
-  lines.push(shareUrl());
+  lines.push(dayLink(puzzle));
   const text = lines.join("\n");
 
   if (navigator.share && matchMedia("(pointer: coarse)").matches) {
@@ -894,6 +939,7 @@ app.addEventListener("click", (e) => {
   if (action === "start") beginQuestion(0);
   else if (action === "next") next();
   else if (action === "share") share();
+  else if (action === "copy-link") copyLink();
   else if (action === "replay") { game = newGame(); renderIntro(); }
   else if (action === "reload") location.reload();
 });
@@ -944,12 +990,18 @@ async function init() {
   if (params.has("archive")) return renderArchive();
 
   let date = today;
+  const day = params.get("day");
   if (params.has("preview")) {
     MODE = "preview";
     if (isDate(params.get("preview"))) date = params.get("preview");
-  } else if (isDate(params.get("day")) && params.get("day") < today) {
-    MODE = "archive";
-    date = params.get("day");
+    else if (/^\d+$/.test(params.get("preview")) && PUZZLES[+params.get("preview") - 1]) date = PUZZLES[+params.get("preview") - 1].date;
+  } else if (day) {
+    // A posted link: today's puzzle plays as normal, an old one as archive, a future one stays shut.
+    const p = /^\d+$/.test(day) ? PUZZLES[+day - 1] : PUZZLES.find((x) => x.date === day);
+    if (!p && /^\d+$/.test(day)) return renderLocked(+day);
+    if (p && p.date > today) return renderLocked(p.number, p.date);
+    if (p) date = p.date;
+    if (date < today) MODE = "archive";
   }
 
   puzzle = PUZZLES.find((p) => p.date === date);

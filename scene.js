@@ -1232,8 +1232,10 @@ const Pixel = (() => {
   }
 
   function build() {
-    const vw = document.documentElement.clientWidth;
-    const vh = Math.max(probe.offsetHeight || 0, window.innerHeight);
+    // Some in-app browsers (Facebook's on Android) report a zero-size window for a moment
+    // while they open. Draw at phone size until the resize with the real size arrives.
+    const vw = document.documentElement.clientWidth || window.innerWidth || 375;
+    const vh = Math.max(probe.offsetHeight || 0, window.innerHeight) || 667;
     const scale = clamp(Math.round(Math.min(vw / 130, vh / 230)), 2, 6);
     const W = Math.ceil(vw / scale);
     const H = Math.ceil(vh / scale);

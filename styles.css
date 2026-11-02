@@ -449,6 +449,11 @@ details[open] > summary::before { content: "- "; }
 .stats b { font-size: 26px; font-weight: 400; color: var(--gold-hi); }
 .sheet .stats { margin-top: 18px; text-shadow: none; }
 
+/* Preview only: the day's link, ready to post in the group. */
+.post-link { width: 100%; margin: 6px 0 4px; text-align: center; text-shadow: var(--lift); }
+.post-link .label { color: var(--gold-hi); }
+.post-link code { display: block; margin: 2px 0 4px; font-family: var(--mono); font-size: 21px; color: var(--ink); overflow-wrap: anywhere; }
+
 .lede { font-size: 26px; line-height: 1.1; color: var(--gold-hi); text-wrap: balance; }
 .sub { margin: 8px 0 14px; color: var(--ink-2); }
 
