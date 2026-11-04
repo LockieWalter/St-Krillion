@@ -195,6 +195,7 @@ function norm(s) {
     .replace(/\bintl\b/g, "international")
     .trim()
     .replace(/^(the|a|an) /, "")
+    .replace(/^(mr|mrs|ms|miss|dr|prof|professor) /, "")
     .replace(/^(bachelors?|masters?|doctor|degree) (of|in) /, "");
 }
 
