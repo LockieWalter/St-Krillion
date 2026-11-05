@@ -114,11 +114,11 @@ swords:  Sals Cafe / Salisbury Cafe, Salisbury Bar / Sals / Sals Bar
 2026-11-05
 
 Q: Name a member of S-Club. Past, Present or Future
-wine:    Heidi Best / Heidi Beers / Beers / Heidi / Best, Liv McMillian / Liv / Shit McPiss / Flick McBean / Love McSelf / Liv McMillan / McMillian / McMillan, Milly O'Connell / The Stallion / Majestic Stallion / Milly / Millie / O'Connell, Ali Radford / Alice Radford / Ali / Alice / Radford, Abby Ballhausen / Abs / Forky Spice / Forky / Abby / Ballhausen
-rings:   Will Cox / Coxy / Will / Cox, Mack Johnston / Mackenzie / Macka / Mack / Mackenzie Johnston / Johnston, Racksel Bailey / Axel Bailey / Ax / Axel / Raxel Bailey / Racksel / Raxel / Bailey, Jess Allen-Waters / JAW / JAWs / Felix Power / Jess / Allen-Waters, Ved Patel / Ved / Patel
-piano:   Paddy McLeish / Paddih / Paddy / McLeish, Rupert Begg / Pegg / Rup / Rupert / Begg, Jemima Williams / Jem / J Dubs / Jemima / Williams, Seamus Shepherd / Seamus Sherpherd / Seamus / Seamussy / Shepherd, Holly Dawson / Daws / Mini Daws / Holly / Dawson
-chalice: Abby Long / Long, Tilly Walker / Tilly / Walker, Ed Taylor / Ed / Eddie / Taylor, Alex Robinson / Robbo / Alex / Robinson, Ollie Webster / Webbo / Ollie / Oliver Webster / Webster
-swords:  Mitch Arcus / Mitch / Mitchell Arcus / Arcus, Nat McRory / Nat / McRory, Gus Leslie / Angus Leslie / Gus / Angus / Leslie, Robbie Sanderson / Robbie / Sanderson, Nick Stack / Nick / Stack, Jack Sproats / Jack / Sproats
+wine:    Heidi Best / Heidi Beers / Beers / Heidi / Best, Liv McMillian / Liv / Shit McPiss / Flick McBean / Love McSelf / Liv McMillan / McMillian / McMillan, Milly O'Connell / The Stallion / Majestic Stallion / Milly / Millie / O'Connell, Ali Radford / Alice Radford / Ali / Alice / Radford, Abby Ballhausen / Abs / Forky Spice / Forky / Abby / Ballhausen, Will Cox / Coxy / Will / Cox
+rings:   Mack Johnston / Mackenzie / Macka / Mack / Mackenzie Johnston / Johnston, Racksel Bailey / Axel Bailey / Ax / Axel / Raxel Bailey / Racksel / Raxel / Bailey, Jess Allen-Waters / JAW / JAWs / Felix Power / Jess / Allen-Waters, Ved Patel / Ved / Patel, Paddy McLeish / Paddih / Paddy / McLeish, Rupert Begg / Pegg / Rup / Rupert / Begg
+piano:   Jemima Williams / Jem / J Dubs / Jemima / Williams, Seamus Shepherd / Seamus Sherpherd / Seamus / Seamussy / Shepherd, Holly Dawson / Daws / Mini Daws / Holly / Dawson, Abby Long / Long, Jack Rowe / Jack / Rowe, Kate Brenner / Kate / Brenner
+chalice: Gus Gregg / Gus / Gregg, Harry Scambler / Harry / Scambler, Jack Dawson, Tilly Walker / Tilly / Walker, Ed Taylor / Ed / Eddie / Taylor, Alex Robinson / Robbo / Alex / Robinson, Ollie Webster / Webbo / Ollie / Oliver Webster / Webster
+swords:  Mitch Arcus / Mitch / Mitchell Arcus / Arcus, Banjo Cole / Banjo / Cole, Nat McRory / Nat / McRory, Gus Leslie / Angus Leslie / Angus / Leslie, Robbie Sanderson / Robbie / Sanderson, Nick Stack / Nick / Stack, Jack Sproats / Sproats
 
 Q: A line of the hymn Jerusalem (like ‘Bring me my Arrows of desire’)
 wine:    And did those feet in ancient time, Bring me my Arrows of desire, Walk upon England's mountains green / Walked upon England's mountains green
