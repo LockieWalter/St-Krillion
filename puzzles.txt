@@ -15,6 +15,8 @@
 #       alternate spellings after a slash:
 #         piano: Freshwater / Freshie, Shelly Beach / Shelly
 #    4. Anything that isn't listed scores nothing, so list generously.
+#    5. Spread each list roughly evenly, about a fifth in each tier, so
+#       most right answers climb more than the bare 10 m.
 #
 #  Capitals, punctuation, "the", plurals, typos and shortenings are
 #  forgiven automatically: "vet" counts as Veterinary Medicine, "mech
@@ -109,10 +111,48 @@ chalice: Scattic Balcony / Scattic Balc / Scattic, Sydney University / Sydney Un
 swords:  Sals Cafe / Salisbury Cafe, Salisbury Bar / Sals / Sals Bar
 
 
+2026-11-05
+
+Q: Name a member of S-Club. Past, Present or Future
+wine:    Heidi Best / Heidi Beers / Beers / Heidi / Best, Liv McMillian / Liv / Shit McPiss / Flick McBean / Love McSelf / Liv McMillan / McMillian / McMillan, Milly O'Connell / The Stallion / Majestic Stallion / Milly / Millie / O'Connell, Ali Radford / Alice Radford / Ali / Alice / Radford, Abby Ballhausen / Abs / Forky Spice / Forky / Abby / Ballhausen
+rings:   Will Cox / Coxy / Will / Cox, Mack Johnston / Mackenzie / Macka / Mack / Mackenzie Johnston / Johnston, Racksel Bailey / Axel Bailey / Ax / Axel / Raxel Bailey / Racksel / Raxel / Bailey, Jess Allen-Waters / JAW / JAWs / Felix Power / Jess / Allen-Waters, Ved Patel / Ved / Patel
+piano:   Paddy McLeish / Paddih / Paddy / McLeish, Rupert Begg / Pegg / Rup / Rupert / Begg, Jemima Williams / Jem / J Dubs / Jemima / Williams, Seamus Shepherd / Seamus Sherpherd / Seamus / Seamussy / Shepherd, Holly Dawson / Daws / Mini Daws / Holly / Dawson
+chalice: Abby Long / Long, Tilly Walker / Tilly / Walker, Ed Taylor / Ed / Eddie / Taylor, Alex Robinson / Robbo / Alex / Robinson, Ollie Webster / Webbo / Ollie / Oliver Webster / Webster
+swords:  Mitch Arcus / Mitch / Mitchell Arcus / Arcus, Nat McRory / Nat / McRory, Gus Leslie / Angus Leslie / Gus / Angus / Leslie, Robbie Sanderson / Robbie / Sanderson, Nick Stack / Nick / Stack, Jack Sproats / Jack / Sproats
+
+Q: A line of the hymn Jerusalem (like ‘Bring me my Arrows of desire’)
+wine:    And did those feet in ancient time, Bring me my Arrows of desire, Walk upon England's mountains green / Walked upon England's mountains green
+rings:   And was the holy Lamb of God, On England's pleasant pastures seen, Till we have built Jerusalem / Till we've built Jerusalem / Until we have built Jerusalem
+piano:   In England's green and pleasant Land / England's green and pleasant land, Nor shall my Sword sleep in my hand, I will not cease from Mental Fight / I shall not cease from Mental Fight
+chalice: And did the Countenance Divine, Among these dark Satanic Mills / Among those dark Satanic Mills / Those dark Satanic Mills, Bring me my Bow of burning gold
+swords:  Bring me my Chariot of fire / Chariots of fire, Bring me my Spear: O clouds unfold / Bring me my Spear O clouds unfold, Shine forth upon our clouded hills, And was Jerusalem builded here / And was Jerusalem built here
+
+Q: Name a fResher convenership (like Shoe Shine or Rain Dance)
+wine:    Shoe Shine / Shoeshine / Fresher Shoeshine / Fresher Shoe Shine, Rain Dance, Fresher Statistician, Keeper of the Crabs, Fresher Jester, Dunce of Yore, Lords Chamberlain of the Household / Lord Chamberlain of the Household / Lord Chamberlain / Lords Chamberlain, Precipitation and Acts of God / Acts of God / Precipitation, Fresher Ralph's, Disreputable Keepers of the Books / Keepers of the Books / Keeper of the Books, Fresher Scholar, Fresher Hoodie, Fresher Bowtie, Fresher Barber, Fresher Gym Cleaner, Fresher Mail, Fresher Print Legend, Fresher Grommet
+rings:   Fresher Concierge, Fresher Ironing, Fresher Penguins, Fresher Kickarounds, Fresher Wet Vac, FrUber / Fresher Uber / Uber, Dunce of Video and Photography / Dunce of Video, Tennis Ball Convenor / Tennis Balls, Fresher Caffeine, Fresher Momentum, Fresher Marketplace, Fresher Darts, Fresher Box Office, Run Fresher Run, Man Murphy's / Dans / Dan Murphy's, Fresher Pharmacist, Plebs of Comfort, Fresher Yarn
+piano:   Fresher WSoP / WSOP / World Series of Poker / Fresher World Series of Poker, McFreshman, Fresher Car Wash, Fresher IT / IT, Fresher King St / Fresher King Street / King Street, Fresh(er) Food People / Fresher Food People / Fresh Food People / Food People, Fresher Chewy, Fresher Sunscreen, Fresher Measurer, Coin Convenor / Coins, Bung Breds, Fresher Fore, Fresher Carpe Diem, Plebs of Tongs, Sanders McFreshChicken / McFreshChicken / McFresh Chicken, Fresher Toolbox, Fresher Officeworks, Fresher Wollongong
+chalice: Fresher Archive, Under Student, Under Secretary, Under Treasurer, Fresher Basement, Fresher Hairdryer, Fresher Mecca, Fresher Fake Tan, Table Tennis & Billiard Convenor / Table Tennis and Billiards Convenor / Table Tennis Convenor / Billiards Convenor / Table Tennis / Billiards, Fresher Wide World of Sports / WWOS, Fresher Handball, Concordia, Fresher Costco, Fresher Thornebowl / Thorne Bowl, Vice-Regal Sub-Warden of the Goatees / Sub-Warden of the Goatees / Goatees, Fresher Beer Baron, Tutorial Room Convenor / Tut Room Convenor, Keeper of the Condiments, Fresh Air
+swords:  Paul / Fresher Paul, Fresher Buffalo Bill, Fresher Bang-for-Your-Wok / Bang for Your Wok, Fresher Fetch, Fresher Physio, Fresher Depop, Fresher Shapes, Fresher Toastie, Fresher Dry Vac, Fresher Rabs, Fresher Quad Cricket, Fresher Exterminator, Fresher Straightener, Fresher Impeachment, Fresher Trivago, Fresher Gel / Gel, Fresher Gambit, Fresher Scorer, Fresher Cookson
+
+Q: Name a delicious college dessert
+wine:    Chocolate Fondant / Chocolate fondant with vanilla ice cream / Chocolate fondant with ice cream / Chocolate fondant with honeycomb / Chocolate fondant with vanilla ice cream and tuile, Vanilla Slice / Vanilla slice with poached rhubarb and vanilla ice cream / Vanilla slice with strawberry / Vanilla slice with macerated strawberry / Vanilla slice with rhubarb, Apple Crumble / Apple crumble with vanilla ice cream / Apple crumble with ice cream, Strawberry Tart / Strawberry tart with coconut ice cream / Strawberry tart with ice cream, Sticky Date Pudding / Warm sticky date pudding with vanilla ice cream / Sticky date pudding with ice cream / Date pudding / Sticky date
+rings:   Lemon Tart / Lemon tart with berry compote and vanilla ice cream / Lemon tart with berry compote / Lemon tart with ice cream, Tiramisu / Tiramisu with chocolate crumb and vanilla ice cream / Tiramisu with chocolate crumb, Coffee Brownie / Coffee brownie with vanilla ice cream and caramel sauce / Coffee brownie with ice cream / Brownie, Salted Caramel Tart / Salted caramel tart with caramel sauce and vanilla cream / Caramel tart, Lemon Meringue Tart / Lemon meringue tart with vanilla mascarpone and lemon myrtle dust / Lemon meringue
+piano:   Drumstick / Drumstick ice cream / Ice cream Drumstick, Raspberry and Passionfruit Tart / Raspberry and passionfruit curd tart with raspberry sorbet / Raspberry passionfruit tart / Passionfruit tart / Raspberry tart, Coconut and Raspberry Jam Slice / Coconut raspberry slice / Raspberry jam slice / Coconut slice, Ricotta Cannoli / Ricotta cannoli with chocolate crumb and vanilla ice cream / Cannoli with ice cream / Cannoli, Red Wine Poached Pears / Wattleseed-poached red wine pears with chocolate ganache and orange-blossom mascarpone / Poached pears / Pear dessert
+chalice: ANZAC Biscuit Cheesecake / ANZAC biscuit cheesecake with biscuit crumb and butterscotch sauce and rum and raisin / ANZAC cheesecake / Biscuit cheesecake / Cheesecake, Apple Strudel / Apple strudel with vanilla cream / Strudel, Basque Cheesecake / Burnt Basque cheesecake, Meringue with Lemon Myrtle Custard / Meringue with lemon-myrtle custard and macerated strawberries / Meringue with lemon custard and strawberries / Strawberry meringue / Meringue, Strawberry and Rhubarb Crumble / Vanilla strawberry rhubarb and mint crumble with raspberry sorbet / Rhubarb crumble / Fruit crumble
+swords:  Panna Cotta / Panna cotta with lemon-myrtle berry compote / Berry panna cotta, Coconut Cheesecake / Coconut cheesecake with chocolate ganache and mango and mint compote and meringue shards / Mango coconut cheesecake, Bread and Butter Pudding / Wattleseed bread and butter pudding with poached pear and rum-raisin ice cream / Wattleseed bread and butter pudding, Red Velvet Cake / Red velvet cake with vanilla ice cream / Red velvet, Christmas Pudding / Christmas pudding with custard / Xmas pudding
+
+Q: Name a famous Pauline alumni
+wine:    Sir William McMahon / William McMahon / Billy McMahon / Bill McMahon / McMahon / William / Billy, John Anderson / John / Anderson, Dyson Heydon / Dyson / Heydon, Andrew Bell / Andrew / Bell, Patrick McGorry / Patrick / Pat McGorry / McGorry, Tony Jones / Tony / Jones
+rings:   Gough Whitlam / Gough / Whitlam, David Marr / David / Marr, Adam Spencer / Adam / Spencer, Tim Freedman / Tim / Freedman, Ed Cowan / Ed / Cowan, Al Baxter / Al / Baxter
+piano:   Michael Hawker / Michael / Mike Hawker / Hawker, Martin Sharp / Martin / Sharp, Will Gibb / Will / Gibb, John Gaden / Gaden, Michael Blakemore / Blakemore, Chris Taylor / Chris / Taylor
+chalice: Hamish Rosser / Hamish / Rosser, Peter Cousens / Peter / Cousens, Morgan O'Neill / Morgan / O'Neill, Cameron Girdlestone / Cameron / Cam / Cam Girdlestone / Girdlestone, Lachlan Renshaw / Lachlan / Lachie / Renshaw, Bret Walker / Bret / Brett / Brett Walker / Walker
+swords:  Sebastian Smee / Sebastian / Seb / Smee, John Eales / Eales, James Halliday / James / Halliday, Warwick Oswald Fairfax / Warwick Fairfax / Warwick / Fairfax, Mark Bethwaite / Mark / Bethwaite, Terence Clarke / Terence / Terry Clarke / Terry / Clarke, Jonathan Mills / Jonathan / Jon Mills / Mills
+
+
 # ------------------------------------------------------------------
 # Copy this block for the next day:
 #
-# 2026-11-05
+# 2026-11-06
 #
 # Q: Name a ...
 # wine:

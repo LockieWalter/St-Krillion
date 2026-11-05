@@ -399,6 +399,8 @@ p { margin: 0; }
 .medal-row { display: flex; justify-content: center; gap: 6px; margin: 12px 0 8px; }
 .medal-row .spr { filter: drop-shadow(0 2px 0 rgba(28, 4, 9, .5)); }
 .note { margin-top: 4px; font-size: 16px; color: var(--ink-2); }
+.btn-row { display: flex; gap: 4px; }
+.btn-row .btn { flex: 1; min-width: 0; padding: 4px 8px 6px; font-size: 21px; letter-spacing: 2px; }
 
 .sky-window { height: 36vh; display: flex; align-items: flex-end; justify-content: center; }
 .sky-window span { font-size: 16px; letter-spacing: 3px; text-transform: uppercase; color: var(--ink); text-shadow: var(--lift); }

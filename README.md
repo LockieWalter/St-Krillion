@@ -12,7 +12,7 @@ The daily St Paul's College quiz. Each day brings a handful of prompts like *"Na
 
 The balloon starts on the lawn at St Paul's. As it rises, the college drops away and Sydney Uni comes into view, then the Harbour Bridge and the city, the clouds, a sunset, twilight and the Southern Cross. A perfect day (every answer Crossed Swords) reaches the golden Jerusalem at the very top.
 
-Players get one go per day on each device. When they finish, they can share their height and icon row to the group chat without giving away any answers.
+Players get one real go per day on each device. When they finish, they can share their height and icon row to the group chat without giving away any answers. After that they can have as many practice goes as they like. Practice goes are labelled "Practice attempt", can't be shared, and never replace the real score.
 
 ## Posting a new day
 
@@ -40,6 +40,8 @@ All the prompts live in [`puzzles.txt`](puzzles.txt). To add a day:
    - Separate answers with commas. Put alternate spellings after a slash (`Freshwater / Freshie`).
    - Capitals, punctuation, "the", plurals, accents, typos and shortenings are forgiven automatically. "Vet" counts as Veterinary Medicine, "Mech Eng" as Mechanical Engineering, "Dining" as Dining Hall. A guess that could be several answers gets the most common one. Nicknames that aren't shortenings (Sals, Jim's, ABC) still need listing.
    - Any answer that isn't listed scores 0, so list generously.
+   - Spread each list roughly evenly, about a fifth in each tier, so most right answers climb more than the bare 10 m.
+   - Players can also type just part of an answer, as long as it fits only one: "Statistician" for Fresher Statistician, "Dark Satanic Mills" for the whole hymn line. A guess made only of words from the prompt (like "Fresher") doesn't count.
    - You can use any number of prompts per day. Five works well. A perfect day always reaches Jerusalem, however many prompts there are.
 3. Commit. The site updates within a minute or so.
 4. **Check the day** by opening `…/?preview=2026-11-03`. Preview mode lets you play that day without saving anything. It also lists any lines in `puzzles.txt` it couldn't understand.

@@ -85,8 +85,9 @@ const store = {
   },
 };
 
+// Practice attempts are never saved, so the real go stays on the books.
 function saveGame() {
-  if (MODE !== "preview") store.set("game:" + game.date, game);
+  if (MODE !== "preview" && !game.practice) store.set("game:" + game.date, game);
 }
 
 /* ----------------------------- dates ------------------------------ */
@@ -193,9 +194,10 @@ function norm(s) {
     .replace(/\bmount\b/g, "mt")
     .replace(/\bn\b/g, "and")
     .replace(/\bintl\b/g, "international")
+    .replace(/\bwith\b/g, "and")
     .trim()
     .replace(/^(the|a|an) /, "")
-    .replace(/^(mr|mrs|ms|miss|dr|prof|professor) /, "")
+    .replace(/^(mr|mrs|ms|miss|dr|prof|professor|sir|dame) /, "")
     .replace(/^(bachelors?|masters?|doctor|degree) (of|in) /, "");
 }
 
@@ -203,12 +205,15 @@ const PROMPT_SKIP = new Set(["name", "the", "and", "that", "with", "from", "you"
 
 // "Bondi Beach" for "Name a Sydney beach" should match "Bondi": as well as the
 // words as typed, also try them without a trailing word that's already in the prompt.
+function promptWordsOf(prompt) {
+  return new Set(norm(prompt).split(" ").filter((w) => w.length > 2 && !PROMPT_SKIP.has(w)));
+}
+
 function wordForms(text, prompt) {
   const words = norm(text).split(" ").filter(Boolean);
   if (!words.length) return [];
   const out = [words];
-  const promptWords = new Set(norm(prompt).split(" ").filter((w) => w.length > 2 && !PROMPT_SKIP.has(w)));
-  if (words.length > 1 && promptWords.has(words[words.length - 1])) out.push(words.slice(0, -1));
+  if (words.length > 1 && promptWordsOf(prompt).has(words[words.length - 1])) out.push(words.slice(0, -1));
   return out;
 }
 
@@ -259,15 +264,16 @@ const GENERIC = new Set([
 // Fit typed words to an answer's words, in order, from the first. Returns a cost
 // (0 = perfect, +1 per shortened, misspelt or missing word), or null if it doesn't fit.
 // The guess may stop early after an abbreviation ("vet" for "Veterinary Medicine")
-// or when all that's left is generic ("Data" for "Data Science"); open = stop anywhere.
+// or when all that's left is generic ("Data" for "Data Science"); open = stop anywhere, at no cost.
 function phraseCost(gw, aw, open = false) {
   let i = 0;
   let cost = 0;
   let lastShort = false;
   for (let j = 0; j < aw.length; j++) {
     if (i === gw.length) {
+      if (open) return cost;
       const rest = aw.slice(j).filter((w) => !FILLER.has(w));
-      return open || lastShort || rest.every((w) => GENERIC.has(w)) ? cost + rest.length : null;
+      return lastShort || rest.every((w) => GENERIC.has(w)) ? cost + rest.length : null;
     }
     const m = wordMatch(gw[i], aw[j]);
     if (m) {
@@ -277,6 +283,24 @@ function phraseCost(gw, aw, open = false) {
     } else if (!FILLER.has(aw[j])) return null;
   }
   return i === gw.length ? cost : null;
+}
+
+// How closely the guess fits inside an answer, starting at any of its words.
+function insideCost(a, gForms, gKey) {
+  let c = Infinity;
+  for (const aw of a.forms) {
+    for (let k = 0; k < aw.length; k++) {
+      for (const gw of gForms) {
+        const p = phraseCost(gw, aw.slice(k), true);
+        if (p !== null) c = Math.min(c, p);
+      }
+      // The same letters split differently: "Bow tie" for "Bowtie".
+      for (let m = k + 1; m <= aw.length; m++) {
+        if (sameKey(aw.slice(k, m).join(""), gKey)) c = 0;
+      }
+    }
+  }
+  return c;
 }
 
 function findAnswer(q, guess) {
@@ -291,6 +315,10 @@ function findAnswer(q, guess) {
       }
     }
   }
+
+  // A guess made only of the prompt's own words ("Fresher", "Dessert") isn't an answer.
+  const promptWords = [...promptWordsOf(q.prompt)];
+  if (gForms[0].every((w) => promptWords.some((p) => p === w || (w.length >= 3 && p.startsWith(w))))) return null;
 
   // Otherwise take the closest fit: a typo in the whole answer, or a word-by-word
   // match with shortenings. On a tie the more common answer wins, so a vague
@@ -321,11 +349,23 @@ function findAnswer(q, guess) {
     }
   }
 
-  // Last resort: the start of exactly one answer, like "Surreal" for "Surreal Sounds".
-  // "Fralley" or "Chicken" start several, so they still don't count.
-  if (!best && gKeys[0].length >= 4) {
-    const hits = q.answers.filter((a) => a.forms.some((aw) => gForms.some((gw) => phraseCost(gw, aw, true) !== null)));
-    if (hits.length === 1) best = hits[0];
+  if (gKeys[0].length >= 4) {
+    const costs = q.answers.map((a) => insideCost(a, gForms, gKeys[0]));
+    // Word for word inside an answer beats a looser fit: "Games room" is Chapel Games
+    // Room, not a typo of Mate's Room, and "Paul" isn't short for Pauline.
+    const exact = q.answers.filter((_, i) => costs[i] === 0);
+    if (best && bestCost > 0 && exact.length && !exact.includes(best)) best = exact.length === 1 ? exact[0] : null;
+
+    // Last resort: a guess that fits inside exactly one answer, from its start or partway
+    // through: "Surreal" for Surreal Sounds, "Statistician" for Fresher Statistician,
+    // "Dark Satanic Mills" for the whole line. "Chicken" fits several, so it doesn't count.
+    // When typos let it fit more than one, the closest fit wins: "Books" is Keepers of
+    // the Books, not Fresher Cookson.
+    if (!best) {
+      const low = Math.min(...costs);
+      const hits = q.answers.filter((_, i) => costs[i] === low);
+      if (low < Infinity && hits.length === 1) best = hits[0];
+    }
   }
   return best;
 }
@@ -493,7 +533,7 @@ function hud() {
       </p>
       <div class="progress">
         <ol class="pips">${pips}</ol>
-        <small>Prompt ${game.index + 1} of ${n}</small>
+        <small>${game.practice ? "Practice · " : ""}Prompt ${game.index + 1} of ${n}</small>
       </div>
       <a class="crest" href="./" aria-label="${esc(CONFIG.name)}">${Pixel.sprite("cross", 2)}</a>
     </header>`;
@@ -679,15 +719,24 @@ function renderResults() {
   show(`
     ${banner()}
     <header class="summit">
-      <p class="label">${MODE === "daily" ? "Today's climb" : "Your climb"} · No. ${puzzle.number}</p>
+      <p class="label">${game.practice ? "Practice attempt" : MODE === "daily" ? "Today's climb" : "Your climb"} · No. ${puzzle.number}</p>
       <p class="total"><b>${total}</b><span>m</span></p>
       <p class="rank">${band.emoji} ${esc(band.name)}</p>
       <p class="to-go">${total >= max ? "You built Jerusalem. Perfect day." : `${max - total} m short of Jerusalem`}</p>
       <p class="medal-row" aria-label="Your answers">${icons}</p>
       ${MODE === "preview"
         ? `${postLink()}<button class="btn ghost block" data-action="replay">Play again</button>`
-        : `<button class="btn primary block" data-action="share">Share your climb</button>
-           <p class="note">Shares your height and icons only. No spoilers.</p>`}
+        : game.practice
+          ? `<div class="btn-row">
+               <button class="btn primary" data-action="practice">Practice again</button>
+               <button class="btn ghost" data-action="reload">My real climb</button>
+             </div>
+             <p class="note">Just practice. Your real climb is still saved.</p>`
+          : `<div class="btn-row">
+               <button class="btn primary" data-action="share">Share</button>
+               <button class="btn ghost" data-action="practice">Practice go</button>
+             </div>
+             <p class="note">Sharing shows your height and icons only. Practice goes aren't saved.</p>`}
     </header>
     <div class="sky-window" aria-hidden="true"><span>▼ Climb log</span></div>
     <section class="sheet results-sheet">
@@ -915,6 +964,7 @@ app.addEventListener("click", (e) => {
   else if (action === "share") share();
   else if (action === "copy-link") copyLink();
   else if (action === "replay") { game = newGame(); renderIntro(); }
+  else if (action === "practice") { game = { ...newGame(), practice: true }; beginQuestion(0); }
   else if (action === "reload") location.reload();
 });
 
