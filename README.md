@@ -81,6 +81,31 @@ To see how a link will look on Facebook (or to refresh a preview after changing 
 
 To change the name, the timer length or the time zone, edit `CONFIG` at the top of `app.js`. The layers of sky and their names are in `BANDS` just below it. All the pixel art (the college, Sydney Uni, the city, the sky, the balloon and the icons) is drawn in code in `scene.js`.
 
+## Seeing who played
+
+The game can quietly record every play in a Google Sheet that only you can open. Players see nothing different, except a small **Add your name** option under *How to play*. Entering a name is optional and it's remembered on their phone. Without a name, their answers still come through under a random player code like `k3x9q2`.
+
+The sheet gets three tabs:
+
+- **Summary** lists each day with how many people played, the average height and the best.
+- **Answers** has one row per prompt: the name, the player code, the guesses that weren't on the list, what they typed, the answer it matched and the tier. The wrong guesses are a good place to find answers worth adding to `puzzles.txt`.
+- **Games** has one row per finished game, with the height and the icon row.
+
+Each row's *Kind* is **On the day**, **Archive** or **Practice**. Preview mode records nothing, so checking a day doesn't add rows. Like scores, the player code belongs to one browser: Facebook's in-app browser and Safari on the same phone show up as two players.
+
+To set it up (about five minutes, once):
+
+1. Make a new Google Sheet ([sheets.new](https://sheets.new)) and call it something like *Jerusillion log*.
+2. Choose **Extensions → Apps Script**. Delete the code that's there, paste in everything from [`google-sheet.gs`](google-sheet.gs), and press **Save**.
+3. In the toolbar, choose **setup** from the function list and press **Run**. Google asks for permission. Pick your account. Google then warns that it "hasn't verified this app", with you named as the developer. That warning shows for every personal script, because only published apps get verified. Choose **Advanced → Go to … (unsafe) → Allow**. The script can only open this one sheet. The sheet now has the three tabs.
+4. Choose **Deploy → New deployment**. Click the gear and pick **Web app**. Set *Execute as* to **Me** and *Who has access* to **Anyone**, then **Deploy**. Copy the **Web app URL**. It ends in `/exec`.
+5. In `app.js`, paste that link between the quotes of `logUrl: ""` near the top, and commit.
+6. Check it: open the game and play (a practice go counts too). Rows should appear in the sheet within a few seconds.
+
+If you ever change the script, use **Deploy → Manage deployments**, edit the deployment and choose **New version**. That keeps the same link.
+
+To stop recording, empty `logUrl` again. The name option disappears with it.
+
 ## Good to know
 
 - Scores are kept in each player's browser, so there's no sign-up, but there's also no shared leaderboard. The group is the leaderboard: the **Share your climb** button copies a spoiler-free score with that day's link, ready to paste as a comment.

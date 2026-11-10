@@ -53,7 +53,7 @@ img.spr { image-rendering: pixelated; display: inline-block; vertical-align: mid
 p { margin: 0; }
 
 /* Notched pixel border: four hard shadows leave the corners cut out. */
-.btn, .card, .sheet, .gauge, .guess input, .banner, .toast {
+.btn, .card, .sheet, .gauge, .guess input, .name-input, .banner, .toast {
   --bc: var(--night);
   box-shadow:
     0 calc(var(--p) * -1) 0 0 var(--bc),
@@ -200,6 +200,29 @@ p { margin: 0; }
   text-shadow: var(--lift);
 }
 .howto .sheet { margin-top: 12px; text-align: left; }
+
+/* The optional name, tucked under How to play. */
+.nameplate { margin-top: -4px; }
+.nameplate.named > summary::before { content: ""; }
+.nameplate summary b { font-weight: 400; color: var(--ink); }
+.name-input {
+  --bc: var(--gold-dk);
+  display: block;
+  width: calc(100% - var(--p) * 2);
+  min-height: 48px;
+  margin: var(--p);
+  padding: 4px 12px;
+  border: 0;
+  border-radius: 0;
+  background: var(--glass);
+  color: var(--ink);
+  caret-color: var(--gold);
+  font: 26px/1 var(--mono);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.name-input::placeholder { color: var(--ink-3); }
+.name-input:focus { outline: none; --bc: var(--gold); }
 
 .sheet {
   --bc: var(--gold-dk);

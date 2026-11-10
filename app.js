@@ -12,25 +12,42 @@ const CONFIG = {
   timeZone: "Australia/Sydney", // the puzzle rolls over at midnight here
   secondsPerQuestion: 25,
   puzzleFile: "puzzles.txt",
+  // The web app link for your Google Sheet log (see README). While it's empty, nothing is recorded
+  // and the "Add your name" option stays hidden.
+  logUrl: "https://script.google.com/macros/s/AKfycbxV6kcl6iUNT44hMGz4ZO7IbfVxRVoLwQgG6Ck8IUS5nWyoqF2Ia5jZzETN4KuSlUL2HQ/exec",
 };
 
 // Points double as metres climbed.
 const TIERS = {
-  0: { name: "Grounded", points: 0, emoji: "❌",
-       blurb: ["Time's up. The balloon stays put.", "The clock beat you to it. No lift."] },
-  1: { name: "Wine Glass", points: 10, emoji: "🍷",
-       blurb: ["Half the college said that.", "As common as a glass at Formal.", "Safe. Very, very safe."] },
-  2: { name: "Rings", points: 25, emoji: "💍",
-       blurb: ["Respectable. Not remarkable.", "A step off the beaten path."] },
-  3: { name: "Piano", points: 50, emoji: "🎹",
-       blurb: ["Now we're playing.", "Solid. The crowd didn't get there."] },
-  4: { name: "Chalice", points: 75, emoji: "🏆",
-       blurb: ["Few Paulines would've found that.", "That's a proper find."] },
-  5: { name: "Crossed Swords", points: 100, emoji: "⚔️",
-       blurb: ["Nobody saw that coming.", "Unreal. Put it on the honour board."] },
+  0: {
+    name: "Grounded", points: 0, emoji: "❌",
+    blurb: ["Time's up. The balloon stays put.", "The clock beat you to it. No lift."]
+  },
+  1: {
+    name: "Wine Glass", points: 10, emoji: "🍷",
+    blurb: ["Half the college said that.", "As common as a glass at Formal.", "Safe. Very, very safe."]
+  },
+  2: {
+    name: "Rings", points: 25, emoji: "💍",
+    blurb: ["Respectable. Not remarkable.", "A step off the beaten path."]
+  },
+  3: {
+    name: "Piano", points: 50, emoji: "🎹",
+    blurb: ["Now we're playing.", "Solid. The crowd didn't get there."]
+  },
+  4: {
+    name: "Chalice", points: 75, emoji: "🏆",
+    blurb: ["Few Paulines would've found that.", "That's a proper find."]
+  },
+  5: {
+    name: "Crossed Swords", points: 100, emoji: "⚔️",
+    blurb: ["Nobody saw that coming.", "Unreal. Put it on the honour board."]
+  },
   // The secret top answer: worth whatever it takes to reach Jerusalem, and it ends the game.
-  6: { name: "1 in a Jerusillion", points: 0, emoji: "🎆",
-       blurb: ["Congratulations, that is the best answer! You have built Jerusalem"] },
+  6: {
+    name: "1 in a Jerusillion", points: 0, emoji: "🎆",
+    blurb: ["Congratulations, that is the best answer! You have built Jerusalem"]
+  },
 };
 const JACKPOT = 6;
 
@@ -93,6 +110,62 @@ const store = {
 // Practice attempts are never saved, so the real go stays on the books.
 function saveGame() {
   if (MODE !== "preview" && !game.practice) store.set("game:" + game.date, game);
+}
+
+/* ----------------------------- logging ---------------------------- */
+
+// With CONFIG.logUrl set, each answered prompt and each finished game is quietly added to the
+// quiz-setter's Google Sheet. It never waits for a reply or shows an error, so the game plays
+// the same whether or not it gets through. Preview mode sends nothing.
+let playerId = null;
+function player() {
+  if (!playerId) {
+    playerId = store.get("player");
+    if (!playerId) {
+      playerId = Math.random().toString(36).slice(2, 8).padEnd(6, "0");
+      store.set("player", playerId);
+    }
+  }
+  return playerId;
+}
+
+function log(row) {
+  if (!CONFIG.logUrl || MODE === "preview") return;
+  try {
+    const body = JSON.stringify({
+      ...row,
+      name: store.get("name") || "",
+      player: player(),
+      number: puzzle.number,
+      date: puzzle.date,
+      kind: game.practice ? "Practice" : MODE === "archive" ? "Archive" : "On the day",
+    });
+    fetch(CONFIG.logUrl, { method: "POST", mode: "no-cors", keepalive: true, body }).catch(() => { });
+  } catch { /* logging must never get in the way of the game */ }
+}
+
+function logAnswer() {
+  const r = game.results[game.index];
+  log({
+    type: "answer",
+    prompt: game.index + 1,
+    question: r.prompt,
+    wrong: r.tried,
+    typed: r.guess,
+    answer: r.answer,
+    tier: r.tier ? TIERS[r.tier].name : "Out of time",
+    metres: r.points,
+  });
+}
+
+function logGame() {
+  const total = totalOf(game);
+  log({
+    type: "game",
+    metres: total,
+    height: bandFor(altOf(total)).name,
+    icons: game.results.map((r) => TIERS[r.tier].emoji).join(""),
+  });
 }
 
 /* ----------------------------- dates ------------------------------ */
@@ -555,6 +628,27 @@ function statsStrip() {
     </p>`;
 }
 
+// Optional: a name to go next to your answers in the quiz-setter's sheet. Kept on this device.
+function nameplate() {
+  if (!CONFIG.logUrl) return "";
+  const name = store.get("name") || "";
+  return `
+    <details class="howto nameplate${name ? " named" : ""}">
+      <summary>${plateLabel(name)}</summary>
+      <div class="sheet">
+        <label class="label" for="player-name">Your name</label>
+        <input id="player-name" class="name-input" type="text" maxlength="24" value="${esc(name)}"
+          placeholder="optional" autocomplete="nickname" autocorrect="off" autocapitalize="words"
+          spellcheck="false" enterkeyhint="done">
+        <p class="note">Optional. The quiz-setter sees it next to your answers.</p>
+      </div>
+    </details>`;
+}
+
+function plateLabel(name) {
+  return name ? `Playing as <b>${esc(name)}</b>` : "Add your name";
+}
+
 function footer() {
   return `
     <footer class="foot">
@@ -595,6 +689,7 @@ function renderIntro() {
           <ol class="ladder" aria-label="Metres by rarity">${ladder}</ol>
         </div>
       </details>
+      ${nameplate()}
       ${postLink()}
     </section>
     ${footer()}
@@ -672,8 +767,8 @@ function renderReveal(fresh) {
       <p class="${won ? "jackpot" : "blurb"}">${pick(t.blurb, i)}</p>
       ${newBand && !won ? `<p class="new-height" style="animation-delay:${Math.round(ms * 0.6)}ms">▲ New height · ${esc(band.name)}</p>` : ""}
       ${won ? "" : rarer.length
-        ? `<p class="finds"><b>${r.tier ? "Rarer" : "Try"}</b> ${rarer.map((a) => `<span>${Pixel.tier(a.tier, 1)}${esc(a.display)}</span>`).join("")}</p>`
-        : `<p class="finds none">Nothing rarer on the list. Top of the board.</p>`}
+      ? `<p class="finds"><b>${r.tier ? "Rarer" : "Try"}</b> ${rarer.map((a) => `<span>${Pixel.tier(a.tier, 1)}${esc(a.display)}</span>`).join("")}</p>`
+      : `<p class="finds none">Nothing rarer on the list. Top of the board.</p>`}
     </section>
     <div class="dock-bottom">
       <button class="btn primary" data-action="next">${won ? "▲ See Jerusalem ▲" : last ? "▲ See how high you got ▲" : "▲ Next prompt ▲"}</button>
@@ -732,14 +827,14 @@ function renderResults() {
       <p class="to-go">${game.results.some((r) => r && r.tier === JACKPOT) ? "1 in a Jerusillion. You built Jerusalem." : total >= max ? "You built Jerusalem. Perfect day." : `${max - total} m short of Jerusalem`}</p>
       <p class="medal-row" aria-label="Your answers">${icons}</p>
       ${MODE === "preview"
-        ? `${postLink()}<button class="btn ghost block" data-action="replay">Play again</button>`
-        : game.practice
-          ? `<div class="btn-row">
+      ? `${postLink()}<button class="btn ghost block" data-action="replay">Play again</button>`
+      : game.practice
+        ? `<div class="btn-row">
                <button class="btn primary" data-action="practice">Practice again</button>
                <button class="btn ghost" data-action="reload">My real climb</button>
              </div>
              <p class="note">Just practice. Your real climb is still saved.</p>`
-          : `<div class="btn-row">
+        : `<div class="btn-row">
                <button class="btn primary" data-action="share">Share</button>
                <button class="btn ghost" data-action="practice">Practice go</button>
              </div>
@@ -897,6 +992,7 @@ function submitGuess(raw) {
   Object.assign(r, { guess, answer: hit.display, tier: hit.tier, points });
   game.phase = "reveal";
   saveGame();
+  logAnswer();
   renderReveal(true);
 }
 
@@ -906,6 +1002,7 @@ function timeUp() {
   Object.assign(game.results[game.index], { tier: 0, points: 0 });
   game.phase = "reveal";
   saveGame();
+  logAnswer();
   renderReveal(true);
 }
 
@@ -914,6 +1011,7 @@ function next() {
   if (!won && game.index + 1 < puzzle.questions.length) return beginQuestion(game.index + 1);
   game.phase = "done";
   saveGame();
+  logGame();
   renderResults();
 }
 
@@ -980,6 +1078,22 @@ app.addEventListener("click", (e) => {
 app.addEventListener("submit", (e) => {
   e.preventDefault();
   submitGuess(e.target.elements.guess.value);
+});
+
+// The optional name saves as it's typed; Enter (or Done on a phone) tucks it away.
+app.addEventListener("input", (e) => {
+  if (e.target.id !== "player-name") return;
+  const name = e.target.value.trim().replace(/\s+/g, " ");
+  store.set("name", name);
+  const plate = e.target.closest(".nameplate");
+  plate.classList.toggle("named", !!name);
+  plate.querySelector("summary").innerHTML = plateLabel(name);
+});
+
+app.addEventListener("keydown", (e) => {
+  if (e.target.id !== "player-name" || e.key !== "Enter") return;
+  e.target.blur();
+  e.target.closest(".nameplate").open = false;
 });
 
 function route() {
