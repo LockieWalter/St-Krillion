@@ -201,8 +201,8 @@ swords:  Lucinda Mulcahy / Lucinda / Mulcahy, Luke Martin / Luke, Will Morahan /
 Q: Animals that live at the college
 wine:    Bin Chicken / Ibis / Ibises / Bin Chook, Kookaburras / Kookaburra / Kooka
 rings:   Charlie Morrison / Charlie / Morrison, Miner Birds / Miner Bird / Noisy Miner / Myna / Mynah / Myna Bird / Indian Myna
-piano:   Cockroach / Cockroaches / Roach / Roaches, Bunny Rabbit / Rabbit / Bunny / Bunnies
-chalice: Felix Power / Possum / Fralley Possum / Felix / Possums, Moth / Moths, Pigeon / Pigeons
+piano:   Cockroach / Cockroaches / Roach / Roaches, Bunny Rabbit / Rabbit / Bunny / Bunnies, Felix Power / Possum / Fralley Possum / Felix / Possums
+chalice: Moth / Moths, Pigeon / Pigeons, Fox / Foxes / Red Fox
 swords:  Spiders / Spider, Jaquavious, Pookie
 
 Q: Bars and pubs on King Street
