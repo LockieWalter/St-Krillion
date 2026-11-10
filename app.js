@@ -28,7 +28,11 @@ const TIERS = {
        blurb: ["Few Paulines would've found that.", "That's a proper find."] },
   5: { name: "Crossed Swords", points: 100, emoji: "⚔️",
        blurb: ["Nobody saw that coming.", "Unreal. Put it on the honour board."] },
+  // The secret top answer: worth whatever it takes to reach Jerusalem, and it ends the game.
+  6: { name: "1 in a Jerusillion", points: 0, emoji: "🎆",
+       blurb: ["Congratulations, that is the best answer! You have built Jerusalem"] },
 };
+const JACKPOT = 6;
 
 // Words that can start a tier line in puzzles.txt (after lower-casing and dropping apostrophes).
 // The old Paul's Gold words still work.
@@ -38,6 +42,7 @@ const TIER_WORDS = {
   "piano": 3, "3": 3, "silver": 3,
   "chalice": 4, "4": 4, "gold": 4,
   "swords": 5, "sword": 5, "crossed swords": 5, "5": 5, "mother lode": 5, "motherlode": 5, "lode": 5,
+  "jerusillion": 6, "1 in a jerusillion": 6, "one in a jerusillion": 6, "jackpot": 6, "6": 6,
 };
 
 // The layers of the climb, by altitude on the 0–500 scale. A perfect day reaches Jerusalem.
@@ -645,8 +650,9 @@ function renderReveal(fresh) {
   const band = bandFor(altOf(total));
   const newBand = fresh && band !== bandFor(altOf(before));
 
+  const won = r.tier === JACKPOT;
   const rarer = q.answers
-    .filter((a) => a.tier > r.tier)
+    .filter((a) => a.tier > r.tier && a.tier !== JACKPOT) // the jackpot stays a secret
     .map((a) => [Math.random(), a]).sort((x, y) => x[0] - y[0]).map(([, a]) => a) // shuffle within each tier
     .sort((a, b) => b.tier - a.tier)
     .slice(0, 3);
@@ -663,14 +669,14 @@ function renderReveal(fresh) {
       <p class="tier-name">${t.name}</p>
       ${r.tier ? `<p class="your-answer">“${esc(r.answer)}”</p>${typed}` : ""}
       <p class="points">+${r.points} m <span>· now ${total} m up</span></p>
-      <p class="blurb">${pick(t.blurb, i)}</p>
-      ${newBand ? `<p class="new-height" style="animation-delay:${Math.round(ms * 0.6)}ms">▲ New height · ${esc(band.name)}</p>` : ""}
-      ${rarer.length
+      <p class="${won ? "jackpot" : "blurb"}">${pick(t.blurb, i)}</p>
+      ${newBand && !won ? `<p class="new-height" style="animation-delay:${Math.round(ms * 0.6)}ms">▲ New height · ${esc(band.name)}</p>` : ""}
+      ${won ? "" : rarer.length
         ? `<p class="finds"><b>${r.tier ? "Rarer" : "Try"}</b> ${rarer.map((a) => `<span>${Pixel.tier(a.tier, 1)}${esc(a.display)}</span>`).join("")}</p>`
         : `<p class="finds none">Nothing rarer on the list. Top of the board.</p>`}
     </section>
     <div class="dock-bottom">
-      <button class="btn primary" data-action="next">${last ? "▲ See how high you got ▲" : "▲ Next prompt ▲"}</button>
+      <button class="btn primary" data-action="next">${won ? "▲ See Jerusalem ▲" : last ? "▲ See how high you got ▲" : "▲ Next prompt ▲"}</button>
     </div>
   `, "play");
 
@@ -678,8 +684,9 @@ function renderReveal(fresh) {
     countUp(app.querySelector(".alt-num"), before, total, ms);
     if (!r.tier) Pixel.effect("rain");
     if (r.tier === 5) after(ms, () => Pixel.effect("sparkle"));
+    if (won) after(ms * 0.5, () => Pixel.effect("fireworks"));
   }
-  if (r.tier >= 4) burst(r.tier === 5 ? 28 : 16);
+  if (r.tier >= 4) burst(r.tier >= 5 ? 28 : 16);
   app.querySelector("[data-action=next]").focus({ preventScroll: true });
 }
 
@@ -693,12 +700,12 @@ function renderResults() {
   // one column per prompt, as tall as the climb it earned
   const chart = puzzle.questions.map((_, i) => {
     const r = game.results[i] || { tier: 0, points: 0 };
-    return `<li class="tier-${r.tier}" style="--h:${r.points}">${Pixel.tier(r.tier, 2)}<span class="stem"></span><small>${i + 1}</small></li>`;
+    return `<li class="tier-${r.tier}" style="--h:${Math.min(r.points, 100)}">${Pixel.tier(r.tier, 2)}<span class="stem"></span><small>${i + 1}</small></li>`;
   }).join("");
 
   const rows = puzzle.questions.map((q, i) => {
     const r = game.results[i] || { tier: 0, points: 0 };
-    const all = [5, 4, 3, 2, 1].map((t) => {
+    const all = [6, 5, 4, 3, 2, 1].map((t) => {
       const list = q.answers.filter((a) => a.tier === t);
       return list.length ? `<p><b>${Pixel.tier(t, 1)} ${TIERS[t].name}</b>${list.map((a) => esc(a.display)).join(", ")}</p>` : "";
     }).join("");
@@ -707,7 +714,7 @@ function renderResults() {
         <span class="row-num">${i + 1}</span>
         <div class="row-main">
           <p class="row-prompt">${esc(q.prompt)}</p>
-          <p class="row-answer">${r.tier ? esc(r.answer) : `<span class="miss">No answer</span>`}</p>
+          <p class="row-answer">${r.tier ? esc(r.answer) : `<span class="miss">${game.results[i] ? "No answer" : "Skipped. Already in Jerusalem"}</span>`}</p>
           <details><summary>Every answer on the list</summary><div class="all">${all}</div></details>
         </div>
         <span class="row-score">${Pixel.tier(r.tier, 2)}<b>+${r.points}</b></span>
@@ -722,7 +729,7 @@ function renderResults() {
       <p class="label">${game.practice ? "Practice attempt" : MODE === "daily" ? "Today's climb" : "Your climb"} · No. ${puzzle.number}</p>
       <p class="total"><b>${total}</b><span>m</span></p>
       <p class="rank">${band.emoji} ${esc(band.name)}</p>
-      <p class="to-go">${total >= max ? "You built Jerusalem. Perfect day." : `${max - total} m short of Jerusalem`}</p>
+      <p class="to-go">${game.results.some((r) => r && r.tier === JACKPOT) ? "1 in a Jerusillion. You built Jerusalem." : total >= max ? "You built Jerusalem. Perfect day." : `${max - total} m short of Jerusalem`}</p>
       <p class="medal-row" aria-label="Your answers">${icons}</p>
       ${MODE === "preview"
         ? `${postLink()}<button class="btn ghost block" data-action="replay">Play again</button>`
@@ -886,7 +893,8 @@ function submitGuess(raw) {
     return;
   }
 
-  Object.assign(r, { guess, answer: hit.display, tier: hit.tier, points: TIERS[hit.tier].points });
+  const points = hit.tier === JACKPOT ? Math.max(0, maxOf() - totalOf(game)) : TIERS[hit.tier].points;
+  Object.assign(r, { guess, answer: hit.display, tier: hit.tier, points });
   game.phase = "reveal";
   saveGame();
   renderReveal(true);
@@ -902,7 +910,8 @@ function timeUp() {
 }
 
 function next() {
-  if (game.index + 1 < puzzle.questions.length) return beginQuestion(game.index + 1);
+  const won = game.results[game.index]?.tier === JACKPOT;
+  if (!won && game.index + 1 < puzzle.questions.length) return beginQuestion(game.index + 1);
   game.phase = "done";
   saveGame();
   renderResults();

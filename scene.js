@@ -1189,7 +1189,7 @@ const Pixel = (() => {
 
   /* --------------------------- the live world ------------------------ */
 
-  const TIER_ICON = { 0: "miss", 1: "wine", 2: "rings", 3: "piano", 4: "chalice", 5: "swords" };
+  const TIER_ICON = { 0: "miss", 1: "wine", 2: "rings", 3: "piano", 4: "chalice", 5: "swords", 6: "cross" };
   // Where the balloon sits on screen, as a share of the height. Ground = parked on the lawn.
   const ANCHOR = { play: 0.8, summit: 0.72 };
 
@@ -1431,7 +1431,71 @@ const Pixel = (() => {
         }
       }
     }
-    effects = effects.filter((e) => frame - e.t0 < e.life);
+    effects = effects.filter((e) => e.kind === "fireworks" || frame - e.t0 < e.life);
+  }
+
+  // Fireworks for the 1 in a Jerusillion answer: shells rise from below and burst
+  // across the sky in maroon, gold and white.
+  const FW_COLOURS = [["#ffe27a", "#f2b632"], ["#ff6f8f", "#c8264f"], ["#ffffff", "#c9d6ff"], ["#ffd0e0", "#ff7aa8"]];
+
+  function makeFireworks(now) {
+    const { W, H } = S;
+    const shells = [];
+    for (let i = 0; i < 14; i++) {
+      shells.push({
+        t0: now + i * 330 + Math.random() * 120,
+        x: Math.round(W * (0.12 + Math.random() * 0.76)),
+        y: Math.round(H * (0.1 + Math.random() * 0.32)),
+        n: 22 + Math.floor(Math.random() * 12),
+        r: Math.min(W, H) * (0.16 + Math.random() * 0.1),
+        col: FW_COLOURS[i % FW_COLOURS.length],
+      });
+    }
+    return { kind: "fireworks", start: now, end: now + 14 * 330 + 2200, shells };
+  }
+
+  function fireworks(now) {
+    const { H } = S;
+    for (const e of effects) {
+      if (e.kind !== "fireworks") continue;
+      for (const s of e.shells) {
+        const t = now - s.t0;
+        if (t < 0) continue;
+        const rise = 650;
+        if (t < rise) {
+          // the shell climbing, with a short spark trail
+          const k = ease(t / rise);
+          const y = Math.round(H + 4 - (H + 4 - s.y) * k);
+          ctx.fillStyle = "#fff2c4";
+          ctx.fillRect(s.x, y, 1, 2);
+          ctx.fillStyle = s.col[1];
+          ctx.fillRect(s.x, y + 3, 1, 1);
+          continue;
+        }
+        const b = (t - rise) / 1500;
+        if (b >= 1) continue;
+        const spread = 1 - (1 - b) ** 3;
+        const drop = b * b * s.r * 0.55;
+        if (b > 0.7 && Math.floor(t / 90) % 2) continue; // flicker out
+        if (b < 0.12) {
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(s.x - 1, s.y - 1, 3, 3);
+        }
+        for (let i = 0; i < s.n; i++) {
+          const a = (i / s.n) * Math.PI * 2;
+          const d = s.r * spread * (i % 2 ? 1 : 0.78);
+          const px = Math.round(s.x + Math.cos(a) * d);
+          const py = Math.round(s.y + Math.sin(a) * d + drop);
+          ctx.fillStyle = s.col[i % 3 ? 0 : 1];
+          ctx.fillRect(px, py, 1, 1);
+          if (b < 0.5) {
+            ctx.fillStyle = s.col[1];
+            ctx.fillRect(Math.round(s.x + Math.cos(a) * d * 0.82), Math.round(s.y + Math.sin(a) * d * 0.82 + drop), 1, 1);
+          }
+        }
+      }
+    }
+    effects = effects.filter((e) => e.kind !== "fireworks" || now < e.end);
   }
 
   function draw() {
@@ -1491,6 +1555,7 @@ const Pixel = (() => {
       if (y > -16 && y < H) ctx.drawImage(icon(TIER_ICON[w.tier]), S.bx - 20, y);
     }
     balloon(c);
+    fireworks(performance.now());
   }
 
   function tick() {
@@ -1505,7 +1570,7 @@ const Pixel = (() => {
   function loop(now) {
     requestAnimationFrame(loop);
     if (!S) return;
-    let moving = false;
+    let moving = effects.some((e) => e.kind === "fireworks");
     if (anim) {
       const t = anim.dur ? clamp((now - anim.t0) / anim.dur, 0, 1) : 1;
       alt = lerp(anim.from, anim.to, ease(t));
@@ -1576,8 +1641,9 @@ const Pixel = (() => {
   }
 
   function effect(kind) {
-    if (reduced.matches) return;
-    effects.push(kind === "rain" ? { kind, t0: frame, life: 22 } : { kind: "sparkle", t0: frame, life: 12, n: 18 });
+    if (reduced.matches || !S) return;
+    if (kind === "fireworks") effects.push(makeFireworks(performance.now()));
+    else effects.push(kind === "rain" ? { kind, t0: frame, life: 22 } : { kind: "sparkle", t0: frame, life: 12, n: 18 });
   }
 
   const urls = new Map();

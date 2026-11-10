@@ -11,6 +11,8 @@
 #         piano:    Piano, 50 m
 #         chalice:  Chalice, 75 m
 #         swords:   Crossed Swords, 100 m. The ones nobody will think of.
+#         jerusillion: 1 in a Jerusillion. A secret answer that jumps
+#                  straight to Jerusalem, with fireworks, and ends the game.
 #       (1: to 5: work too.) Separate answers with commas. Put
 #       alternate spellings after a slash:
 #         piano: Freshwater / Freshie, Shelly Beach / Shelly
@@ -194,10 +196,49 @@ chalice: Luca Corser / Corser, Zoe Fritsch / Zoe / Fritsch, Madeleine Watson / M
 swords:  Lucinda Mulcahy / Lucinda / Mulcahy, Luke Martin / Luke, Will Morahan / Morahan, Penelope Swift / Penelope / Swift / Penny / Penny Swift, Siddharth Shasidharan / Siddharth / Shasidharan / Sid / Sidd / Sid Shasidharan, Aleksej Stevanovic / Aleksej / Stevanovic / Aleks / Alex / Alexei / Alex Stevanovic, Cybele Hewitt / Cybele / Hewitt, Harry Morgan, Julie Jiao / Julie / Jiao, Max Morrow / Morrow, Robert Lloyd / Robert / Lloyd / Rob Lloyd, Sarah Goldman / Goldman, Toby Frank / Frank, Joel Alexander-Easaw / Joel / Alexander-Easaw / Alexander / Easaw / Joel Alexander / Joel Easaw, Gigi Freeman / Gigi / Freeman, Molly McIntyre / Molly / McIntyre, Ryan Wood / Ryan / Wood, Caitlin Cheung / Caitlin / Cheung, Harrison Howard / Harrison / Howard, John Toohey / John / Toohey, Ted Burney / Ted / Burney, Emma Dawson-Damer / Dawson-Damer / Dawson / Damer / Emma Dawson / Emma Damer, Henry Baker / Baker, Olive Loughhead / Olive / Loughhead, Zara Mesley / Mesley
 
 
+2026-11-10
+
+Q: Animals that live at the college
+wine:    Bin Chicken / Ibis / Ibises / Bin Chook, Kookaburras / Kookaburra / Kooka
+rings:   Charlie Morrison / Charlie / Morrison, Miner Birds / Miner Bird / Noisy Miner / Myna / Mynah / Myna Bird / Indian Myna
+piano:   Cockroach / Cockroaches / Roach / Roaches, Bunny Rabbit / Rabbit / Bunny / Bunnies
+chalice: Felix Power / Possum / Fralley Possum / Felix / Possums, Moth / Moths, Pigeon / Pigeons
+swords:  Spiders / Spider, Jaquavious, Pookie
+
+Q: Bars and pubs on King Street
+wine:    The Newtown Hotel / Newtown Hotel / The Newtown, The Marlborough Hotel / The Marlborough / Marlborough / The Marley / The Marly / Marley / Marly
+rings:   Town Hall Hotel Newtown / Town Hall Hotel / Town Hall / The Townie / Townie, Stonewall Newtown / Stonewall / Stonewall Hotel
+piano:   Earl's Juke Joint / Earl's / Juke Joint, Buddy's Bar Newtown / Buddy's Bar / Buddy's / Buddies, Websters Bar / Websters / Webster's Bar
+chalice: Kelly's on King / Kelly's, UNCANNY Newtown / Uncanny, The Bank / Bank Hotel / The Bank Hotel
+swords:  Corridor Newtown / Corridor, She Loves You, Tiki 33 Bar / Tiki 33 / Tiki Bar / Tiki
+
+Q: JDs and PSLs from 2026
+wine:    Jack Rowe / Jack / Rowe, Tom Ramsey / Tom / Ramsey / Tom Ramsay, Jemima Williams / Jem / J Dubs / Jemima / Williams, Emily DSouza / Em DSouza / Emily D'Souza / Emily / Em / DSouza / D'Souza
+rings:   Freya Carmody / Freya / Carmody, Seamus Shepherd / Seamus / Seamussy / Shepherd, Will Edwards / Will / Edwards, Holly Dawson / Daws / Mini Daws / Holly / Dawson, Rupert Begg / Pegg / Rup / Rupert / Begg
+piano:   Patrick McLeish / Patrick McLeash / Paddy McLeish / Paddy / Paddih / Patrick / McLeish, Grace Merrilees / Grace / Merrilees, Charlotte Toll / Charlotte / Toll, Zoe Anderson / Zoe / Anderson, Isabella Watson / Izy Watson / Izzy Watson / Isabella / Izy / Izzy / Watson
+chalice: Gigi O'Rourke / Gigi O'Rouke / Gigi / O'Rourke, Tom Slack-Smith / Slack-Smith / Tom Slack, Eliza Crawford / Liza / Eliza / Crawford, Ava Peterson / Ava / Peterson, Will Alga / The Eagle / Eagle / Alga
+swords:  Michael Masi / Michael / Mike Masi / Masi, Rory Lambert / Rory / Lambert, Hugh Thompson / Hugh / Thompson, Tahlia Sorgiovanni / Tahlia / Sorgiovanni, Tom Ellis / Ellis
+
+Q: An event you may attend during O-Week
+wine:    Sancta Under the Stars / Under the Stars / Sancta, Entrance Exam, Naming Ceremony, Intercol Dinner / Intercollegiate Dinner / Intercol, Book Signing
+rings:   Beach Day / Beach, The Dail, Ice Cream Truck / Ice Cream Van / Ice Cream, Movie Night / Movies, Debrief Groups / Debrief, Wake-up / Wake Up
+piano:   PSL Breakfast / PSL Brekkie / Breakfast, Uni Tour / University Tour / Campus Tour, Wesley Sals / Wesley, The Sals / Sals / Salisbury, Scavenger Hunt, Water Park / Waterpark / Wet'n'Wild / Wet n Wild
+chalice: Grose / The Grose, Marley / The Marley / The Marly / Marlborough, Roll Call, Consent Classes / Consent Class / Consent Training, Chapel / Chapel Service, Trivia / Trivia Night
+swords:  Video Games / Video Game Night / Gaming, Yoga and Toga / Yoga, Neon Theme / Neon Party / Neon, Sober Night, Lawn Bowls / Lawn Bowling / Bowls, Toby fRank / Mole Reveal / Toby Frank / Mole
+
+Q: A cast member from either Mummers play this year
+wine:    Olivia McMillan / Liv McMillan / Liv McMillian / Olivia / Liv / McMillan, Heidi Best / Beers / Heidi Beers / Heidi / Best, Hugo Sudell / Suds / Hugo / Sudell, Adam Hempsell / Adam / Hempsell
+rings:   Angus Leslie / Gus Leslie / Angus / Gus / Leslie, Jemima Williams / Jem / J Dubs / Jemima / Williams, Freya Carmody / Freya / Carmody, Charlotte Ellis / Charlotte / Ellis
+piano:   Anna Morrison / Anna / Morrison, Abby Long / Abby / Long, Noah Teitler / Noah / Teitler, Olympia Carlton / Olympia / Carlton
+chalice: Amber Jarman / Amber / Jarman, Ava Ritchie / Ava / Ritchie, George Tait / George / Tait, Harry Gregor / Harry / Gregor, Emily Gillard / Emily / Gillard
+swords:  Genna Hartin / Genevieve Hartin / Genna / Genevieve / Hartin, Dom Goodall / Dom / Dominic / Goodall, Kate Eggleston / Kate / Eggleston, Henry Baker / Henry / Baker, Madeleine Watson / Maddy Watson / Maddie Watson / Madeleine / Watson
+jerusillion: Lockie Walter / Lochie Walter / Lachie Walter / Lachlan Walter / Lachy Walter / Locky Walter / Walter / Legend / Lockie / Lochie / Lachie / Lachlan / Lachy / Locky
+
+
 # ------------------------------------------------------------------
 # Copy this block for the next day:
 #
-# 2026-11-07
+# 2026-11-11
 #
 # Q: Name a ...
 # wine:

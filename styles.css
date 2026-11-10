@@ -349,6 +349,10 @@ p { margin: 0; }
 .tier-4 { --tc: var(--gold-hi); }
 .tier-5 { --tc: var(--gold-hi); }
 .tier-5 .tier-name { animation: glint 1.4s steps(2, jump-none) infinite; }
+.tier-6 { --tc: var(--gold-hi); }
+.tier-6 .tier-name { font-size: clamp(38px, 11vw, 54px); line-height: .95; animation: glint .7s steps(2, jump-none) infinite; }
+.tier-6 .medal .spr { animation: medal-in .5s steps(5, end) both, bob 1.2s .6s steps(2, jump-none) infinite; }
+.jackpot { margin-top: 10px; font-size: 26px; line-height: 1.1; color: var(--gold-hi); text-wrap: balance; }
 
 .your-answer { margin-top: 10px; font-size: 30px; line-height: 1.05; color: var(--ink); }
 .typed { display: block; margin-top: 2px; font-size: 16px; color: var(--ink-3); }

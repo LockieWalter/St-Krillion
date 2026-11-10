@@ -10,6 +10,8 @@ The daily St Paul's College quiz. Each day brings a handful of prompts like *"Na
 | 🏆 Chalice | 75 m |
 | ⚔️ Crossed Swords (nobody will think of it) | 100 m |
 
+There's also a secret tier, **1 in a Jerusillion** (a `jerusillion:` line in `puzzles.txt`). That answer is worth whatever it takes to reach the top: the balloon jumps straight to Jerusalem, fireworks go off, and the game ends there. It never shows up in the "Rarer" hints.
+
 The balloon starts on the lawn at St Paul's. As it rises, the college drops away and Sydney Uni comes into view, then the Harbour Bridge and the city, the clouds, a sunset, twilight and the Southern Cross. A perfect day (every answer Crossed Swords) reaches the golden Jerusalem at the very top.
 
 Players get one real go per day on each device. When they finish, they can share their height and icon row to the group chat without giving away any answers. After that they can have as many practice goes as they like. Practice goes are labelled "Practice attempt", can't be shared, and never replace the real score.
