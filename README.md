@@ -83,7 +83,7 @@ To change the name, the timer length or the time zone, edit `CONFIG` at the top 
 
 ## Seeing who played
 
-The game can quietly record every play in a Google Sheet that only you can open. Players see nothing different, except a small **Add your name** option under *How to play*. Entering a name is optional and it's remembered on their phone. Without a name, their answers still come through under a random player code like `k3x9q2`.
+The game can quietly record every play in a Google Sheet that only you can open. Players see nothing different, except a **Your name (optional)** box just under *Start climbing*. Filling it in is optional, and the name is remembered on their phone. Without a name, their answers still come through under a random player code like `k3x9q2`.
 
 The sheet gets three tabs:
 
@@ -104,7 +104,7 @@ To set it up (about five minutes, once):
 
 If you ever change the script, use **Deploy → Manage deployments**, edit the deployment and choose **New version**. That keeps the same link.
 
-To stop recording, empty `logUrl` again. The name option disappears with it.
+To stop recording, empty `logUrl` again. The name box disappears with it.
 
 ## Good to know
 

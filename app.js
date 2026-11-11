@@ -13,7 +13,7 @@ const CONFIG = {
   secondsPerQuestion: 25,
   puzzleFile: "puzzles.txt",
   // The web app link for your Google Sheet log (see README). While it's empty, nothing is recorded
-  // and the "Add your name" option stays hidden.
+  // and the name box stays hidden.
   logUrl: "https://script.google.com/macros/s/AKfycbxV6kcl6iUNT44hMGz4ZO7IbfVxRVoLwQgG6Ck8IUS5nWyoqF2Ia5jZzETN4KuSlUL2HQ/exec",
 };
 
@@ -633,20 +633,12 @@ function nameplate() {
   if (!CONFIG.logUrl) return "";
   const name = store.get("name") || "";
   return `
-    <details class="howto nameplate${name ? " named" : ""}">
-      <summary>${plateLabel(name)}</summary>
-      <div class="sheet">
-        <label class="label" for="player-name">Your name</label>
-        <input id="player-name" class="name-input" type="text" maxlength="24" value="${esc(name)}"
-          placeholder="optional" autocomplete="nickname" autocorrect="off" autocapitalize="words"
-          spellcheck="false" enterkeyhint="done">
-        <p class="note">Optional. The quiz-setter sees it next to your answers.</p>
-      </div>
-    </details>`;
-}
-
-function plateLabel(name) {
-  return name ? `Playing as <b>${esc(name)}</b>` : "Add your name";
+    <div class="nameplate">
+      <input id="player-name" class="name-input" type="text" maxlength="24" value="${esc(name)}"
+        placeholder="Your name (optional)" aria-label="Your name (optional)" autocomplete="nickname"
+        autocorrect="off" autocapitalize="words" spellcheck="false" enterkeyhint="done">
+      <p class="nameplate-note">Only the quiz-setter sees it, with your answers.</p>
+    </div>`;
 }
 
 function footer() {
@@ -675,6 +667,7 @@ function renderIntro() {
     ${banner()}
     <section class="dock">
       <button class="btn primary big" data-action="start">▲ Start climbing ▲</button>
+      ${nameplate()}
       <p class="dock-sub">${n} prompts · ${CONFIG.secondsPerQuestion} seconds each · ${esc(CONFIG.tagline.toLowerCase())}</p>
       ${statsStrip()}
       <details class="howto">
@@ -689,7 +682,6 @@ function renderIntro() {
           <ol class="ladder" aria-label="Metres by rarity">${ladder}</ol>
         </div>
       </details>
-      ${nameplate()}
       ${postLink()}
     </section>
     ${footer()}
@@ -1080,20 +1072,14 @@ app.addEventListener("submit", (e) => {
   submitGuess(e.target.elements.guess.value);
 });
 
-// The optional name saves as it's typed; Enter (or Done on a phone) tucks it away.
+// The optional name saves as it's typed; Enter (or Done on a phone) puts the keyboard away.
 app.addEventListener("input", (e) => {
   if (e.target.id !== "player-name") return;
-  const name = e.target.value.trim().replace(/\s+/g, " ");
-  store.set("name", name);
-  const plate = e.target.closest(".nameplate");
-  plate.classList.toggle("named", !!name);
-  plate.querySelector("summary").innerHTML = plateLabel(name);
+  store.set("name", e.target.value.trim().replace(/\s+/g, " "));
 });
 
 app.addEventListener("keydown", (e) => {
-  if (e.target.id !== "player-name" || e.key !== "Enter") return;
-  e.target.blur();
-  e.target.closest(".nameplate").open = false;
+  if (e.target.id === "player-name" && e.key === "Enter") e.target.blur();
 });
 
 function route() {

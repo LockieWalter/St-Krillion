@@ -201,28 +201,29 @@ p { margin: 0; }
 }
 .howto .sheet { margin-top: 12px; text-align: left; }
 
-/* The optional name, tucked under How to play. */
-.nameplate { margin-top: -4px; }
-.nameplate.named > summary::before { content: ""; }
-.nameplate summary b { font-weight: 400; color: var(--ink); }
+/* The optional name, just under Start. */
+.nameplate { width: 100%; margin-top: 2px; }
 .name-input {
-  --bc: var(--gold-dk);
+  --bc: var(--gold);
   display: block;
   width: calc(100% - var(--p) * 2);
-  min-height: 48px;
+  min-height: 52px;
   margin: var(--p);
   padding: 4px 12px;
   border: 0;
   border-radius: 0;
-  background: var(--glass);
+  background: var(--glass-dk);
   color: var(--ink);
   caret-color: var(--gold);
-  font: 26px/1 var(--mono);
+  font: 28px/1 var(--mono);
+  letter-spacing: 1px;
+  text-align: center;
   -webkit-appearance: none;
   appearance: none;
 }
-.name-input::placeholder { color: var(--ink-3); }
-.name-input:focus { outline: none; --bc: var(--gold); }
+.name-input::placeholder { color: var(--ink-2); }
+.nameplate-note { margin-top: 6px; font-size: 16px; color: var(--ink-2); text-shadow: var(--lift); }
+.name-input:focus { outline: none; --bc: var(--gold-hi); }
 
 .sheet {
   --bc: var(--gold-dk);
