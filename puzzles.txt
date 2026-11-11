@@ -235,10 +235,48 @@ swords:  Genna Hartin / Genevieve Hartin / Genna / Genevieve / Hartin, Dom Gooda
 jerusillion: Lockie Walter / Lochie Walter / Lachie Walter / Lachlan Walter / Lachy Walter / Locky Walter / Walter / Legend / Lockie / Lochie / Lachie / Lachlan / Lachy / Locky
 
 
+2026-11-11
+
+Q: Thai restaurants on King Street
+wine:    Charles Thai / Charles, Thai Pothong / Pothong
+rings:   Newtown Thai, Thai La Ong / La Ong
+piano:   Thai Riffic Newtown / Thai Riffic / Thai-riffic / Thairiffic / Riffic, It's Time for Thai / Time for Thai
+chalice: Bangkok Bites Newtown / Bangkok Bites / Bangkok, Atom Thai / Atom
+swords:  Phuket Thai / Phuket, Doytao Thai / Doytao / Doy Tao, Ladda's The Thai Takeaway / Ladda's Thai Takeaway / Ladda's Thai / Ladda's / Laddas
+
+Q: Places off limits to undergrad Paulines at college (like the Archives)
+wine:    Archives / The Archive, Grad House Rooftop / Grad House Roof / Grad Rooftop / Grad House / Rooftop / Roof, Radford Rooftop / Radford Roof / Radford
+rings:   Bone Room / Bone, Garnsey Attic / Garnsy Attic / Garnsey / Garnsy / Attic, Scattic Backrooms / Scattic Backroom / Scattic / Backrooms
+piano:   Denison Flat / Deno Flat / Denison / Deno, Waddy Centre Store Room / Waddy Center Store Room / Waddy Centre / Waddy Center / Waddy / Store Room / Storeroom, Chalmer's Room / Chalmers Room / Chalmers, Sals Wine Cellar / Salisbury Wine Cellar / Sals Cellar / Wine Cellar / Cellar
+chalice: Your Room During an Event / Your room during events / My room during an event / My room during events / My Room / Your Room, Kitchen / The Kitchen / College Kitchen, IHB Flat / Ivan Head Flat, Fire Warden Jim's / Firewarden Jim's / Jim's Room / Jim's / Firewarden's Room / Fire Warden's Room
+swords:  Crypt / Cript / The Crypt, SCR / Senior Common Room, Fralley Goon Room / Fralley Tut Room / Goon Room / Fralley, Warden's Lodge / Warden's House / Lodge
+
+Q: AI models you have used to complete an already extended assignment (like Claude Opus, no version number)
+wine:    Claude Opus / Opus, ChatGPT Astra / ChatGPT / Chat GPT / GPT / Astra / GPT Astra, ChatGPT Sol / GPT Sol / Sol, Gemini Pro / Gemini / Bard
+rings:   Microsoft Copilot / Copilot / Bing / Bing Chat, Perplexity / Perplexity AI, Gemini Flash / Flash, Claude Sonnet / Sonnet
+piano:   ChatGPT Luna / GPT Luna / Luna, Meta AI / Meta, Meta Muse / Muse, DeepSeek / Deep Seek
+chalice: Grok, NotebookLM / Notebook LM / Notebook, Claude Haiku / Haiku, GitHub Copilot / Git Copilot, Mistral / Le Chat
+swords:  Qwen, Llama, ChatGPT Pro / GPT Pro, Chrissy 3.5 Max / Chrissy Smith / Chrissy, HAL / HAL 9000
+
+Q: An ANZAC Day pub
+wine:    The Paragon / Paragon Hotel, The Lord Nelson / Lord Nelson Hotel / Nelson, The Hero of Waterloo / Hero of Waterloo Hotel / Hero / Waterloo
+rings:   The Royal Oak Hotel / The Royal Oak / Royal Oak / The Oak, The Harbourview / Harbourview Hotel / Harbour View / Harbour View Hotel, Orient Hotel / The Orient / Orient
+piano:   Hotel Palisade / The Palisade / Palisade / Palisade Hotel, Glenmore / The Glenmore / Glenmore Hotel, Customs House / The Customs House / Customs House Hotel
+chalice: The Grand Hotel / The Grand / Grand Hotel, Fortune of War / The Fortune of War / Fortune, The Mercantile / Mercantile Hotel
+swords:  Angel Hotel / The Angel / Angel, Hotel Sweeny's / Sweeny's / Sweeney's / Sweeny's Hotel, Star Bar / The Star Bar, The Rawson / Rawson Hotel
+
+Q: Things you may be fined for / given gardening duty for at college
+wine:    Keeping Cutlery / Cutlery / Stealing Cutlery / Taking Cutlery, Climbing the Roof / Climbing / Climbing Roofs / Roof Climbing, Breaking into Sals / Sneaking into Sals / Breaking into the Sals / Breaking In
+rings:   Hazing, Buffalo, Loud Music / Noise / Being Loud / Music
+piano:   Too Drunk at Sals / Getting too drunk at the Sals / Getting Drunk / Being Drunk / Drunk, Cheating in Sport / Cheating, Hosting Afters / Hosting Kickons / Kickons / Afters
+chalice: Climbing Uni Roof / Climbing University Roof / Uni Roof / University Roof, Buzzcut / Buzz Cut / Shaved Head, Dyeing Hair / Dying Hair / Dyed Hair / Hair Dye
+swords:  Eyebrow Slit / Eyebrow Slits / Slit, Posting a Photo of Cameltoe / Bad J-Tour Post / J-Tour Post / Cameltoe, Saying Warden High Table Ladies Gentlemen Freshers / Warden High Table Ladies and Gentlemen Freshers, Having Free Thought / Free Thought / Agency / Free Thinking
+
+
 # ------------------------------------------------------------------
 # Copy this block for the next day:
 #
-# 2026-11-11
+# 2026-11-12
 #
 # Q: Name a ...
 # wine:
